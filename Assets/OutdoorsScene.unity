@@ -4225,7 +4225,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e53082984ba08e8448df99b3fc9b4c0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  squatDuration: 1
+  squatDepth: 2
   moveSpeed: 35
+  isCrouch: 0
+  playerCamera: {fileID: 1823688464}
   isMovementEnabled: 1
 --- !u!136 &674998311
 CapsuleCollider:
@@ -11970,7 +11974,7 @@ Transform:
   m_GameObject: {fileID: 1823688464}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: -0.00000040233135}
-  m_LocalPosition: {x: 0.02200001, y: 1.211, z: 0.07600003}
+  m_LocalPosition: {x: 0.02200001, y: 0.7127025, z: 0.07600003}
   m_LocalScale: {x: 0.16609916, y: 0.16609916, z: 0.16609916}
   m_ConstrainProportionsScale: 0
   m_Children: []

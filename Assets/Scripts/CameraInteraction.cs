@@ -25,32 +25,34 @@ public class CameraInteraction : MonoBehaviour
     {
         CheckInteractionDistance();
 
-        if (isSpriteSpawned)
-        {
-            if (Input.GetKeyDown(interactionKey))
-            {
-                interactionStates[currentIndicatorSpriteObject] = new CameraState
-                {
-                    cameraPosition = Camera.main.transform.position,
-                    cameraRotation = Camera.main.transform.rotation,
-                    objectPosition = currentIndicatorSpriteObject.transform.position,
-                    objectRotation = currentIndicatorSpriteObject.transform.rotation
-                };
+        if (!isSpriteSpawned) return;
 
-                MoveCameraToInteractionPoint();
-                GameManager.TogglePause();
-                GameManager.DisableCameraControl();
-                GameManager.DisablePlayerControl();
-                isInteractionStarted = true;
-            }
-            else if (isInteractionStarted && Input.GetKeyDown(cancelKey))
+        if (Input.GetKeyDown(interactionKey) && !isInteractionStarted)
+        {
+            interactionStates[currentIndicatorSpriteObject] = new CameraState
             {
-                ReturnCameraToInteractionPosition();
-                GameManager.TogglePause();
-                GameManager.EnableCameraControl();
-                GameManager.EnablePlayerControl();
-                isInteractionStarted = false;
-            }
+                cameraPosition = Camera.main.transform.position,
+                cameraRotation = Camera.main.transform.rotation,
+                objectPosition = currentIndicatorSpriteObject.transform.position,
+                objectRotation = currentIndicatorSpriteObject.transform.rotation
+            };
+
+            MoveCameraToInteractionPoint();
+            GameManager.TogglePause();
+            GameManager.DisableCameraControl();
+            GameManager.DisablePlayerControl();
+            isInteractionStarted = true;
+            return;
+        }
+
+        if (isInteractionStarted && Input.GetKeyDown(cancelKey))
+        {
+            ReturnCameraToInteractionPosition();
+            GameManager.TogglePause();
+            GameManager.EnableCameraControl();
+            GameManager.EnablePlayerControl();
+            isInteractionStarted = false;
+            return;
         }
     }
 
@@ -129,5 +131,4 @@ public class CameraInteraction : MonoBehaviour
 
         HideSprite();
     }
-
 }
