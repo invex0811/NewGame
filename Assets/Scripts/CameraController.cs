@@ -11,10 +11,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (!rotationEnabled)
-        {
-            return;
-        }
+        if (!rotationEnabled) return;
 
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
