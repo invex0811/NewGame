@@ -3,132 +3,129 @@ using System.Collections.Generic;
 
 public class CameraInteraction : MonoBehaviour
 {
-    public KeyCode interactionKey = KeyCode.E;
-    public KeyCode cancelKey = KeyCode.Escape;
-    public float interactionDistance = 7f;
-    public GameObject indicatorSpritePrefab;
+    private Dictionary<GameObject, CameraState> _interactionStates = new Dictionary<GameObject, CameraState>();
+    private GameObject _currentIndicatorSpriteObject;
 
-    private Dictionary<GameObject, CameraState> interactionStates = new Dictionary<GameObject, CameraState>();
-    private GameObject currentIndicatorSpriteObject;
-    private bool isSpriteSpawned = false;
-    private bool isInteractionStarted = false;
+    public GameObject IndicatorSpritePrefab;
+    public Camera MainCamera;
+    public Camera InteractionCamera;
+    public KeyCode InteractionKey = KeyCode.E;
+    public KeyCode CancelKey = KeyCode.Escape;
+    public float InteractionDistance = 7f;
+    public bool IsInteractionStarted = false;
+    public bool IsSpriteSpawned = false;
 
     private class CameraState
     {
-        public Vector3 cameraPosition;
-        public Quaternion cameraRotation;
         public Vector3 objectPosition; // Добавлено для сохранения позиции объекта
         public Quaternion objectRotation; // Добавлено для сохранения поворота объекта
     }
 
-    void Update()
+    private void Update()
     {
         CheckInteractionDistance();
 
-        if (!isSpriteSpawned) return;
+        if (!IsSpriteSpawned) return;
 
-        if (Input.GetKeyDown(interactionKey) && !isInteractionStarted)
+        if (Input.GetKeyDown(InteractionKey) && !IsInteractionStarted)
         {
-            interactionStates[currentIndicatorSpriteObject] = new CameraState
+            _interactionStates[_currentIndicatorSpriteObject] = new CameraState
             {
-                cameraPosition = Camera.main.transform.position,
-                cameraRotation = Camera.main.transform.rotation,
-                objectPosition = currentIndicatorSpriteObject.transform.position,
-                objectRotation = currentIndicatorSpriteObject.transform.rotation
+                objectPosition = _currentIndicatorSpriteObject.transform.position,
+                objectRotation = _currentIndicatorSpriteObject.transform.rotation
             };
 
-            MoveCameraToInteractionPoint();
+            MoveToInteractionPoint();
             GameManager.TogglePause();
-            GameManager.DisableCameraControl();
+            GameManager.DisableCameraControl(MainCamera);
             GameManager.DisablePlayerControl();
-            isInteractionStarted = true;
+            IsInteractionStarted = true;
             return;
         }
 
-        if (isInteractionStarted && Input.GetKeyDown(cancelKey))
+        if (IsInteractionStarted && Input.GetKeyDown(CancelKey))
         {
-            ReturnCameraToInteractionPosition();
+            ReturnToInteractionPosition();
             GameManager.TogglePause();
-            GameManager.EnableCameraControl();
+            GameManager.EnableCameraControl(MainCamera);
             GameManager.EnablePlayerControl();
-            isInteractionStarted = false;
+            IsInteractionStarted = false;
             return;
         }
     }
 
-    void MoveCameraToInteractionPoint()
+    private void ToogleIntercationCamera()
     {
-        if (currentIndicatorSpriteObject != null && interactionStates.ContainsKey(currentIndicatorSpriteObject))
-        {
-            Camera.main.transform.position = interactionStates[currentIndicatorSpriteObject].objectPosition;
+        if (MainCamera == null || InteractionCamera == null) return;
 
-            // Поворачиваем камеру по координатам объекта
-            Vector3 objectEulerAngles = interactionStates[currentIndicatorSpriteObject].objectRotation.eulerAngles;
-            Camera.main.transform.rotation = Quaternion.Euler(0f, objectEulerAngles.y, 0f);
+        InteractionCamera.enabled = !InteractionCamera.enabled;
+        MainCamera.enabled = !MainCamera.enabled;
 
-            // Дополнительная логика взаимодействия, если необходимо
-        }
+        CameraController controller = MainCamera.GetComponent<CameraController>();
+        controller.enabled = MainCamera.enabled;
     }
-
-    void ReturnCameraToInteractionPosition()
+    private void MoveToInteractionPoint()
     {
-        if (currentIndicatorSpriteObject != null && interactionStates.ContainsKey(currentIndicatorSpriteObject))
-        {
-            CameraState state = interactionStates[currentIndicatorSpriteObject];
-            Camera.main.transform.position = state.cameraPosition;
-            Camera.main.transform.rotation = state.cameraRotation;
-        }
+        if (_currentIndicatorSpriteObject == null && !_interactionStates.ContainsKey(_currentIndicatorSpriteObject)) return;
+
+        ToogleIntercationCamera();
+
+        InteractionCamera.transform.position = _interactionStates[_currentIndicatorSpriteObject].objectPosition;
+        Vector3 objectEulerAngles = _interactionStates[_currentIndicatorSpriteObject].objectRotation.eulerAngles;
+        InteractionCamera.transform.rotation = Quaternion.Euler(0f, objectEulerAngles.y, 0f);
     }
-
-    void ShowSprite(Vector3 position, Quaternion rotation)
+    private void ReturnToInteractionPosition()
     {
-        if (indicatorSpritePrefab != null && !isSpriteSpawned)
-        {
-            currentIndicatorSpriteObject = Instantiate(indicatorSpritePrefab, position, rotation);
-            isSpriteSpawned = true;
+        if (_currentIndicatorSpriteObject == null && !_interactionStates.ContainsKey(_currentIndicatorSpriteObject)) return;
 
-            CameraState state = new CameraState
-            {
-                cameraPosition = Camera.main.transform.position,
-                cameraRotation = Camera.main.transform.rotation,
-                objectPosition = position,
-                objectRotation = rotation
-            };
-
-            interactionStates[currentIndicatorSpriteObject] = state;
-        }
-        else if (indicatorSpritePrefab == null)
-        {
-            Debug.LogError("Префаб индикатора спрайта не назначен в инспекторе!");
-        }
+        ToogleIntercationCamera();
     }
-
-    void HideSprite()
+    private void CheckInteractionDistance()
     {
-        if (currentIndicatorSpriteObject != null)
-        {
-            Destroy(currentIndicatorSpriteObject);
-            isSpriteSpawned = false;
-        }
-    }
-
-    void CheckInteractionDistance()
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, interactionDistance);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, InteractionDistance);
 
         foreach (var collider in colliders)
         {
             GameObject obj = collider.gameObject;
 
-            float distance = Vector3.Distance(obj.transform.position, Camera.main.transform.position);
+            float distance = Vector3.Distance(obj.transform.position, MainCamera.transform.position);
 
-            if (distance <= interactionDistance)
+            if (distance <= InteractionDistance)
             {
-                ShowSprite(obj.transform.position, obj.transform.rotation);
+                ShowSprite(transform.position, transform.rotation);
                 return;
             }
         }
 
         HideSprite();
+    }
+    private void ShowSprite(Vector3 position, Quaternion rotation)
+    {
+        if (IsSpriteSpawned) return;
+
+        if (IndicatorSpritePrefab == null)
+        {
+            Debug.LogError("Префаб индикатора спрайта не назначен в инспекторе!");
+            return;
+        }
+
+        _currentIndicatorSpriteObject = Instantiate(IndicatorSpritePrefab, position, rotation);
+        IsSpriteSpawned = true;
+
+        CameraState state = new CameraState
+        {
+            objectPosition = position,
+            objectRotation = rotation
+        };
+
+        _interactionStates[_currentIndicatorSpriteObject] = state;
+    }
+    private void HideSprite()
+    {
+        if (_currentIndicatorSpriteObject != null)
+        {
+            Destroy(_currentIndicatorSpriteObject);
+            IsSpriteSpawned = false;
+        }
     }
 }

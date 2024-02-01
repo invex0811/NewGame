@@ -21,39 +21,36 @@ public static class GameManager
         }
     }
 
-    public static void EnableCameraControl()
+    public static void EnableCameraControl(Camera camera)
     {
-        SetCameraControl(true);
+        SetCameraControl(true,camera);
 
     }
 
-    public static void DisableCameraControl()
+    public static void DisableCameraControl(Camera camera)
     {
-        SetCameraControl(false);
+        SetCameraControl(false,camera);
 
     }
 
-    private static void SetCameraControl(bool enable)
+    private static void SetCameraControl(bool enable, Camera camera)
     {
-        Camera mainCamera = Camera.main;
 
-        if (mainCamera != null)
-        {
-            CameraController cameraController = mainCamera.GetComponent<CameraController>();
-
-            if (cameraController != null)
-            {
-                cameraController.enabled = enable;
-            }
-            else
-            {
-                Debug.LogError("CameraController script not found on the object with tag 'Main Camera'!");
-            }
-        }
-        else
+        if (camera == null)
         {
             Debug.LogError("Main Camera not found!");
+            return;
         }
+
+        CameraController cameraController = camera.GetComponent<CameraController>();
+
+        if (cameraController == null)
+        {
+            Debug.LogError("CameraController script not found on the object with tag 'Main Camera'!");
+            return;
+        }
+
+        cameraController.enabled = enable;
     }
 
     public static void PerformPauseActions()

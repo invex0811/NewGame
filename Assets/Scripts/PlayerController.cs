@@ -1,44 +1,47 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
-    public float squatDuration = 0.2f;
-    public float squatDepth = 2f;
-    public float moveSpeed = 5.0f;
-    public bool isCrouch = false;
-    public GameObject playerCamera;
-    public static PlayerController instance;
+    public static PlayerController Instance;
 
-    private CharacterController controller;
-    public bool isMovementEnabled = true;
+    private CharacterController _controller;
+
+    public GameObject PlayerBody;
+    public float SquatDuration = 0.5f;
+    public float SquatDepth = 2f;
+    public float MoveSpeed = 15.0f;
+    public bool IsMovementEnabled = true;
+    public bool IsCrouchEnabled = true;
+    public bool IsCrouch = false;
 
     private void Start()
     {
-        controller = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        _controller = GetComponent<CharacterController>();
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible = false;
     }
 
     private void Update()
     {
-        if (isMovementEnabled) MovePlayer();
-        if (Input.GetKeyDown(KeyCode.LeftControl)) StartCoroutine(Crouch());
+        if (IsMovementEnabled) MovePlayer();
+        if (Input.GetKeyDown(KeyCode.LeftControl) && IsCrouchEnabled) StartCoroutine(Crouch());
     }
     private void Awake()
     {
-        instance = this;
-        StartCoroutine(Crouch());
+        Instance = this;
     }
 
     public void EnableMovement()
     {
-        isMovementEnabled = true;
+        IsMovementEnabled = true;
     }
 
     public void DisableMovement()
     {
-        isMovementEnabled = false;
+        IsMovementEnabled = false;
     }
     private void MovePlayer()
     {
@@ -47,31 +50,33 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
 
-        moveDirection.y -= 9.81f * Time.deltaTime;
+        // Ёту залупу добавил GPT как € пон€л. я так и не смог пон€ть наху€.
+        //moveDirection.y -= 9.81f * Time.deltaTime;
 
-        controller.Move(moveDirection * moveSpeed * Time.deltaTime);
+        _controller.Move(MoveSpeed * Time.deltaTime * moveDirection);
     }
     private IEnumerator Crouch()
     {
+        IsCrouchEnabled = false;
+
         float elapsedTime = 0f;
-        Vector3 initialPosition = playerCamera.transform.position;
-        Vector3 targetPosition = initialPosition;
+        float targetScale = PlayerBody.transform.localScale.y;
+        if (!IsCrouch) targetScale -= SquatDepth;
+        if (IsCrouch) targetScale += SquatDepth;
 
-        if (isCrouch) targetPosition = initialPosition - new Vector3(0f, squatDepth, 0f);
-        if (!isCrouch) targetPosition = initialPosition + new Vector3(0f, squatDepth, 0f);
-
-        while (elapsedTime < squatDuration)
+        while (elapsedTime < SquatDuration)
         {
-            playerCamera.transform.position = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / squatDuration);
+            PlayerBody.transform.localScale = Vector3.Lerp(PlayerBody.transform.localScale, new Vector3(PlayerBody.transform.localScale.x, targetScale, PlayerBody.transform.localScale.z), elapsedTime);
 
             elapsedTime += Time.deltaTime;
-
             yield return null;
         }
 
-        playerCamera.transform.position = targetPosition;
+        PlayerBody.transform.localScale = new Vector3(PlayerBody.transform.localScale.x, targetScale, PlayerBody.transform.localScale.z);
 
-        isCrouch = !isCrouch;
+        IsCrouch = !IsCrouch;
+        IsCrouchEnabled = true;
+
         yield return null;
     }
 }
