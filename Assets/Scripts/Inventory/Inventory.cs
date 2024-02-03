@@ -1,54 +1,67 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+class Inventory
 {
-    public GameObject inventory;
-    public bool flag = false;
+    public List<InventorySlot> Slots { get; private set; } = new List<InventorySlot>();
 
-    void Start()
+    public void Add(Item item)
     {
-        Cursor.visible = false; // Скрываем системный курсор при старте
+        if (Slots.Count >= 30)
+            return;
+
+        InventorySlot newSlot = new(ItemsList.GetID(item));
+        Slots.Add(newSlot);
     }
 
-    void Update()
+    public void Remove(Item item)
     {
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            flag = !flag;
-            inventory.SetActive(flag);
+        int index = Slots.IndexOf(Slots.Find(s => s.ItemID == ItemsList.GetID(item)));
 
-            // Блокируем/разблокируем системный курсор в зависимости от состояния инвентаря
-            Cursor.visible = flag;
+        if (Slots[index] == null) return;
 
-            // Останавливаем/возобновляем движение курсора в зависимости от состояния инвентаря
-            if (flag)
-            {
-                Cursor.lockState = CursorLockMode.Confined;
-                Time.timeScale = 0f; // Останавливаем время в игре
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Time.timeScale = 1f; // Возобновляем время в игре
-            }
-        }
-        // Добавляем проверку наличия объекта CameraController
-        CameraController cameraController = CameraController.instance;
-        if (cameraController != null)
-        {
-            // Если инвентарь открыт, отключаем вращение камеры, иначе включаем
-            if (flag)
-            {
-                cameraController.DisableRotation();
-            }
-            else
-            {
-                cameraController.EnableRotation();
-            }
-        }
+        Slots.Remove(Slots[index]);
     }
-    public void ToggleInventory()
-    {
 
-    }
+    //public GameObject InventoryObject;
+    //public bool Flag = false;
+
+    //void Start()
+    //{
+    //    Cursor.visible = false;
+    //}
+
+    //void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.I)) ToggleInventory();
+    //}
+    //public void ToggleInventory()
+    //{
+    //    Flag = !Flag;
+    //    InventoryObject.SetActive(Flag);
+    //    Cursor.visible = Flag;
+
+    //    if (Flag)
+    //    {
+    //        Cursor.lockState = CursorLockMode.Confined;
+    //        Time.timeScale = 0f;
+    //    }
+    //    else
+    //    {
+    //        Cursor.lockState = CursorLockMode.None;
+    //        Time.timeScale = 1f;
+    //    }
+
+    //    CameraController cameraController = CameraController.instance;
+
+    //    if (cameraController == null) return;
+
+    //    if (Flag)
+    //    {
+    //        cameraController.DisableRotation();
+    //    }
+    //    else
+    //    {
+    //        cameraController.EnableRotation();
+    //    }
 }
