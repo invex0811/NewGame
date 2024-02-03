@@ -2,16 +2,33 @@ using UnityEngine;
 
 public static class GameManager
 {
-    private static bool isGamePaused = false;
+    private static Camera _currentCamera = Camera.main;
+    private static bool _isGamePaused = false;
+    private static TypesOfControl _typeOfControl = TypesOfControl.PlayerControl;
 
+    public static Camera CurrentCamera {  get { return _currentCamera; } }
     public static bool IsGamePaused
     {
-        get { return isGamePaused; }
+        get { return _isGamePaused; }
+    }
+    public static TypesOfControl TypeOfControl
+    {
+        get { return _typeOfControl; }
+    }
+    private static void PauseGame()
+    {
+        _isGamePaused = true;
+        Time.timeScale = 0f;
+    }
+    private static void ResumeGame()
+    {
+        _isGamePaused = false;
+        Time.timeScale = 1f;
     }
 
     public static void TogglePause()
     {
-        if (isGamePaused)
+        if (_isGamePaused)
         {
             ResumeGame();
         }
@@ -20,111 +37,18 @@ public static class GameManager
             PauseGame();
         }
     }
-
-    public static void EnableCameraControl(Camera camera)
+    public static void ChangeTypeOfControll(TypesOfControl newType)
     {
-        SetCameraControl(true,camera);
-
+        _typeOfControl = newType;
     }
-
-    public static void DisableCameraControl(Camera camera)
+    public static void SwitchCamera(Camera camera)
     {
-        SetCameraControl(false,camera);
-
-    }
-
-    private static void SetCameraControl(bool enable, Camera camera)
-    {
-
-        if (camera == null)
-        {
-            Debug.LogError("Main Camera not found!");
-            return;
-        }
-
-        CameraController cameraController = camera.GetComponent<CameraController>();
-
-        if (cameraController == null)
-        {
-            Debug.LogError("CameraController script not found on the object with tag 'Main Camera'!");
-            return;
-        }
-
-        cameraController.enabled = enable;
-    }
-
-    public static void PerformPauseActions()
-    {
-        // ƒополнительные действи€ при паузе (если нужны)
-        // ...
-    }
-
-    public static void PerformResumeActions()
-    {
-        // ƒополнительные действи€ при возобновлении игры (если нужны)
-        // ...
-    }
-
-    private static void PauseGame()
-    {
-        isGamePaused = true;
-        Time.timeScale = 0f;
-        // ƒополнительные действи€ при паузе (если нужны)
-        // ...
-
-        // ¬аш код дл€ отключени€ управлени€ игроком и камерой
-    }
-
-    private static void ResumeGame()
-    {
-        isGamePaused = false;
-        Time.timeScale = 1f;
-        // ƒополнительные действи€ при возобновлении игры (если нужны)
-        // ...
-
-        // ¬аш код дл€ включени€ управлени€ игроком и камерой
-    }
-    public static void DisablePlayerControl()
-    {
-        PlayerController playerController = GetPlayerController();
-
-        if (playerController != null)
-        {
-            playerController.enabled = false;
-        }
-        else
-        {
-            Debug.LogError("PlayerController script not found on player object!");
-        }
-    }
-
-    public static void EnablePlayerControl()
-    {
-        PlayerController playerController = GetPlayerController();
-
-        if (playerController != null)
-        {
-            playerController.enabled = true;
-        }
-        else
-        {
-            Debug.LogError("PlayerController script not found on player object!");
-        }
-    }
-
-    private static PlayerController GetPlayerController()
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-        if (player != null)
-        {
-            return player.GetComponent<PlayerController>();
-        }
-        else
-        {
-            Debug.LogError("Player object is null or not found!");
-            return null;
-        }
+        _currentCamera = camera;
     }
 }
 
+public enum TypesOfControl
+{
+    PlayerControl,
+    InventoryControl
+}
