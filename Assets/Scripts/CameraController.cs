@@ -2,39 +2,40 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public float sensitivity = 2.0f;
+    private float _rotationVertical = 0.0f;
+    private bool _rotationEnabled = true;
+
+    public float sensitivity = 1.0f;
     public float maxYAngle = 80.0f;
-    public static CameraController instance;
+    public static CameraController Instance;
 
-    private float rotationX = 0.0f;
-    private bool rotationEnabled = true;
-
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Update()
     {
-        if (!rotationEnabled) return;
+        if (GameManager.TypeOfControl != TypesOfControl.PlayerControl)
+            return;
+        if (!_rotationEnabled)
+            return;
 
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
         transform.parent.Rotate(Vector3.up * mouseX * sensitivity);
 
-        rotationX -= mouseY * sensitivity;
-        rotationX = Mathf.Clamp(rotationX, -maxYAngle, maxYAngle);
-        transform.localRotation = Quaternion.Euler(rotationX, 0.0f, 0.0f);
+        _rotationVertical -= mouseY * sensitivity;
+        _rotationVertical = Mathf.Clamp(_rotationVertical, -maxYAngle, maxYAngle);
+        transform.localRotation = Quaternion.Euler(_rotationVertical, 0.0f, 0.0f);
     }
 
     public void EnableRotation()
     {
-        rotationEnabled = true;
+        _rotationEnabled = true;
     }
-
     public void DisableRotation()
     {
-        rotationEnabled = false;
-    }
-
-    private void Awake()
-    {
-        instance = this;
+        _rotationEnabled = false;
     }
 }
