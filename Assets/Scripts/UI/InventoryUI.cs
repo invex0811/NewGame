@@ -12,6 +12,7 @@ class InventoryUI : MonoBehaviour
     public Button UseButton;
     public Button InspectButton;
     public Button DiscardButton;
+    public Button CancelButton;
 
     private void OnEnable()
     {
@@ -49,12 +50,15 @@ class InventoryUI : MonoBehaviour
             itemSlot.transform.Find("ItemName").GetComponent<TextMeshProUGUI>().text = ItemsList.Items[slot.ItemID].DisplayName;
             itemSlot.GetComponent<Button>().onClick.AddListener(() => OpenOptionsPanel(slot.ItemID));
         }
+
+        CloseOptionsPanel();
     }
     private void OpenOptionsPanel(int itemID)
     {
         UseButton.onClick.AddListener(() => UseItem(itemID));
         InspectButton.onClick.AddListener(() => InspectItem(itemID));
         DiscardButton.onClick.AddListener(() => DiscardItem(itemID));
+        CancelButton.onClick.AddListener(() => CloseOptionsPanel());
 
         OptionsPanel.SetActive(true);
 
@@ -81,16 +85,23 @@ class InventoryUI : MonoBehaviour
     {
         ItemsList.Items[itemID].Use();
         UpdateInventory();
-        OptionsPanel.SetActive(false);
     }
     private void InspectItem(int itemID)
     {
-        OptionsPanel.SetActive(false);
+        UpdateInventory();
     }
     private void DiscardItem(int itemID)
     {
         Player.Inventory.Remove(ItemsList.Items[itemID]);
         UpdateInventory();
+    }
+    private void CloseOptionsPanel()
+    {
+        UseButton.onClick.RemoveAllListeners();
+        InspectButton.onClick.RemoveAllListeners();
+        DiscardButton.onClick.RemoveAllListeners();
+        CancelButton.onClick.RemoveAllListeners();
+
         OptionsPanel.SetActive(false);
     }
 }
