@@ -9,13 +9,19 @@ static class ItemsList
             "Key",
             "Opens doors",
             Resources.Load<Sprite>("Sprites/E"),
-            Resources.Load<GameObject>("Prefabs/ItemSlot")
+            Resources.Load<GameObject>("Prefabs/Key3DObjectPrafab")
             ),
         new VideoTape(
-            "VideoTape",
+            "Video Tape",
             "Plays video if inserted into TV",
             Resources.Load<Sprite>("Sprites/E"),
-            Resources.Load<GameObject>("Prefabs/ItemSlot")
+            Resources.Load<GameObject>("Prefabs/VideoTape/VideoTape")
+            ),
+        new Note(
+            "Note",
+            "Can be read",
+            Resources.Load<Sprite>("Sprites/E"),
+            Resources.Load<GameObject>("Prefabs/Note")
             )
     };
     public static int GetID(Item item)

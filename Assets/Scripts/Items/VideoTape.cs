@@ -1,4 +1,5 @@
 using UnityEngine;
+[System.Serializable]
 
 class VideoTape : Item
 {

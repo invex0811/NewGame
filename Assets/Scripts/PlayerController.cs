@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance;
 
     public GameObject PlayerBody;
-    public Transform Inventory;
+    public Transform UI;
 
     private void Awake()
     {
@@ -68,21 +69,6 @@ public class PlayerController : MonoBehaviour
 
         yield return null;
     }
-    public void OpenInventory()
-    {
-        CameraController.Instance.enabled = false;
-        this.enabled = false;
-
-        GameManager.TogglePause();
-        GameManager.ChangeTypeOfControll(TypesOfControl.InventoryControl);
-
-        GameObject inventory = GetComponentInChildren<InventoryUI>(true).Inventory;
-        inventory.SetActive(true);
-        Inventory.SetParent(GameManager.CurrentCamera.transform, false);
-
-        UnityEngine.Cursor.lockState = CursorLockMode.None;
-        UnityEngine.Cursor.visible = true;
-    }
     private void MovePlayer()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -91,5 +77,24 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
 
         _controller.Move(Player.MoveSpeed * Time.deltaTime * moveDirection);
+    }
+
+    public void OpenInventory()
+    {
+        CameraController.Instance.enabled = false;
+        this.enabled = false;
+
+        GameManager.TogglePause();
+
+        if (InteractionController.Instance.CurrentInteraction == InteractionType.None)
+            GameManager.ChangeTypeOfControll(TypesOfControl.InventoryControl);
+        else
+            GameManager.ChangeTypeOfControll(TypesOfControl.InteractionControl);
+
+        UIController.Instance.OpenInventory();
+        UI.SetParent(GameManager.CurrentCamera.transform, false);
+
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.visible = true;
     }
 }

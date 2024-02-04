@@ -25,14 +25,18 @@ public class InteractionController : MonoBehaviour
     private void Update()
     {
         if(GameManager.TypeOfControl == TypesOfControl.PlayerControl)
+        {
             InteractionRayCast();
+            return;
+        }
 
-        if (_currentInteraction != InteractionType.None && GameManager.TypeOfControl == TypesOfControl.InventoryControl && Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.CloseInventory]))
+        if (_currentInteraction != InteractionType.None && GameManager.TypeOfControl == TypesOfControl.InteractionControl && Input.GetKeyDown(KeyBindsList.InteractionControllBinds[InteractionControllBindTypes.StopInteraction]))
         {
             GameManager.SwitchCamera(MainCamera);
             ReturnToInteractionPosition();
             PlayerController.Instance.enabled = true;
             _currentInteraction = InteractionType.None;
+            UIController.Instance.CloseInventory();
             return;
         }
     }

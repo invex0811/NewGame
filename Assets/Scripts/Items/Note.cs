@@ -1,7 +1,7 @@
 using UnityEngine;
 [System.Serializable]
 
-class Key : Item
+class Note : Item
 {
     private string _displayName;
     private string _description;
@@ -13,7 +13,7 @@ class Key : Item
     public override Sprite Sprite => _sprite;
     public override GameObject Prefab => _prefab;
 
-    public Key(string displayName, string description, Sprite icon, GameObject prefab)
+    public Note(string displayName, string description, Sprite icon, GameObject prefab)
     {
         _displayName = displayName;
         _description = description;
@@ -23,8 +23,7 @@ class Key : Item
 
     public override void Use()
     {
-        Player.Inventory.Remove(this);
-        Debug.Log("Key used.");
+        Debug.Log("Note read.");
     }
     public override void PickUp()
     {

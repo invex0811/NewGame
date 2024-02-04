@@ -14,6 +14,10 @@ static class KeyBindsList
     {
         {InventoryControllBindTypes.CloseInventory, KeyCode.Escape},
     };
+    public static readonly Dictionary<InteractionControllBindTypes, KeyCode> InteractionControllBinds = new()
+    {
+        {InteractionControllBindTypes.StopInteraction, KeyCode.Escape},
+    };
 }
 
 enum PlayerControllBindTypes
@@ -26,4 +30,8 @@ enum PlayerControllBindTypes
 enum InventoryControllBindTypes
 {
     CloseInventory
+}
+enum InteractionControllBindTypes
+{
+    StopInteraction
 }

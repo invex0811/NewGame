@@ -1,38 +1,43 @@
 using System;
+using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-class InventoryUI : MonoBehaviour
+class UIController : MonoBehaviour, IDragHandler
 {
+    private GameObject _inspectablePrefab;
+
+    public static UIController Instance;
+
     public GameObject Inventory;
     public GameObject OptionsPanel;
+    public GameObject InspectionPanel;
     public Transform ItemContainer;
+    public Camera InspectionCamera;
     public Canvas ParentCanvas;
     public Button UseButton;
     public Button InspectButton;
     public Button DiscardButton;
     public Button CancelButton;
+    public Button CloseInspectionPanelButton;
+    public TextMeshProUGUI ObjectName;
+    public TextMeshProUGUI ObjectDescription;
 
-    private void OnEnable()
+    private void Awake()
     {
-        UpdateInventory();
+        Instance = this;
     }
     private void Update()
     {
-        if (GameManager.TypeOfControl != TypesOfControl.InventoryControl)
-        {
-            Debug.LogError("Type of controll conflict");
-            return;
-        }
-
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Player.Inventory.Add(ItemsList.Items[0]); // Код для дебага. Добавляет предмет "Key" в инвентарь игрока.
             UpdateInventory();
         }
 
-        if (Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.CloseInventory]))
+        if (GameManager.TypeOfControl == TypesOfControl.InventoryControl && Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.CloseInventory]))
             CloseInventory();
     }
 
@@ -68,19 +73,6 @@ class InventoryUI : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle(ParentCanvas.transform as RectTransform, mousePosition, ParentCanvas.worldCamera, out localMousePosition);
         OptionsPanel.transform.position = ParentCanvas.transform.TransformPoint(localMousePosition);
     }
-    private void CloseInventory()
-    {
-        PlayerController.Instance.enabled = true;
-        CameraController.Instance.enabled = true;
-
-        GameManager.ChangeTypeOfControll(TypesOfControl.PlayerControl);
-        GameManager.TogglePause();
-
-        Inventory.SetActive(false);
-
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-        UnityEngine.Cursor.visible = false;
-    }
     private void UseItem(int itemID)
     {
         ItemsList.Items[itemID].Use();
@@ -88,6 +80,19 @@ class InventoryUI : MonoBehaviour
     }
     private void InspectItem(int itemID)
     {
+        if(_inspectablePrefab != null)
+            Destroy(_inspectablePrefab.gameObject);
+
+        _inspectablePrefab =  Instantiate(ItemsList.Items[itemID].Prefab, new Vector3 (1000, 1000, 1000), Quaternion.identity);
+
+        CloseInspectionPanelButton.onClick.AddListener(() => CloseInspectionPanel());
+
+        InspectionCamera.enabled = true;
+        InspectionPanel.SetActive(true);
+
+        ObjectName.text = ItemsList.Items[itemID].DisplayName;
+        ObjectDescription.text = ItemsList.Items[itemID].Description;
+
         UpdateInventory();
     }
     private void DiscardItem(int itemID)
@@ -103,5 +108,36 @@ class InventoryUI : MonoBehaviour
         CancelButton.onClick.RemoveAllListeners();
 
         OptionsPanel.SetActive(false);
+    }
+    private void CloseInspectionPanel()
+    {
+        CloseInspectionPanelButton.onClick.RemoveAllListeners();
+
+        InspectionPanel.SetActive(false);
+        InspectionCamera.enabled = false;
+    }
+
+    public void OpenInventory()
+    {
+        Inventory.SetActive(true);
+        UpdateInventory();
+    }
+    public void CloseInventory()
+    {
+        PlayerController.Instance.enabled = true;
+        CameraController.Instance.enabled = true;
+
+        GameManager.ChangeTypeOfControll(TypesOfControl.PlayerControl);
+        GameManager.TogglePause();
+
+        Inventory.SetActive(false);
+
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible = false;
+    }
+    public void OnDrag(PointerEventData eventData)
+    {
+        if(_inspectablePrefab!= null)
+            _inspectablePrefab.transform.eulerAngles += new Vector3(-eventData.delta.y / 3, -eventData.delta.x / 3);
     }
 }

@@ -50,5 +50,6 @@ public static class GameManager
 public enum TypesOfControl
 {
     PlayerControl,
-    InventoryControl
+    InventoryControl,
+    InteractionControl
 }
