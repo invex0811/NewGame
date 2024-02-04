@@ -90,11 +90,12 @@ public class InteractionController : MonoBehaviour
             {
                 _interactionPoint = hit.collider.GetComponent<InteractableObject>().InteractionPoint;
                 _currentInteraction = hit.collider.GetComponent<InteractableObject>().InteractionType;
-                Debug.Log(_currentInteraction);
+
                 PlayerController.Instance.OpenInventory();
+                PlayerController.Instance.enabled = false;
                 GameManager.SwitchCamera(InteractionCamera);
                 MoveToInteractionPoint();
-                PlayerController.Instance.enabled = false;
+
                 return;
             }
 

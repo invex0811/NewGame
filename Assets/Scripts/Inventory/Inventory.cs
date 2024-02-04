@@ -18,50 +18,7 @@ class Inventory
     {
         int index = Slots.IndexOf(Slots.Find(s => s.ItemID == ItemsList.GetID(item)));
 
-        if (Slots[index] == null) return;
-
-        Slots.Remove(Slots[index]);
+        if (Slots[index] != null)
+            Slots.Remove(Slots[index]);
     }
-
-    //public GameObject InventoryObject;
-    //public bool Flag = false;
-
-    //void Start()
-    //{
-    //    Cursor.visible = false;
-    //}
-
-    //void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.I)) ToggleInventory();
-    //}
-    //public void ToggleInventory()
-    //{
-    //    Flag = !Flag;
-    //    InventoryObject.SetActive(Flag);
-    //    Cursor.visible = Flag;
-
-    //    if (Flag)
-    //    {
-    //        Cursor.lockState = CursorLockMode.Confined;
-    //        Time.timeScale = 0f;
-    //    }
-    //    else
-    //    {
-    //        Cursor.lockState = CursorLockMode.None;
-    //        Time.timeScale = 1f;
-    //    }
-
-    //    CameraController cameraController = CameraController.instance;
-
-    //    if (cameraController == null) return;
-
-    //    if (Flag)
-    //    {
-    //        cameraController.DisableRotation();
-    //    }
-    //    else
-    //    {
-    //        cameraController.EnableRotation();
-    //    }
 }

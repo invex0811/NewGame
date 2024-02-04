@@ -63,8 +63,6 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Inventory\InventorySlot.cs" />
     <Compile Include="Assets\Scripts\Items\Item.cs" />
-    <Compile Include="Assets\Scripts\UI\ItemUI.cs" />
-    <Compile Include="Assets\game.cs" />
     <Compile Include="Assets\Scripts\Note\PauseUi.cs" />
     <Compile Include="Assets\Scripts\Inventory\Inventory.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />

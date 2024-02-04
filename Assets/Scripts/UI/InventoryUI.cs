@@ -6,7 +6,12 @@ using UnityEngine.UI;
 class InventoryUI : MonoBehaviour
 {
     public GameObject Inventory;
+    public GameObject OptionsPanel;
     public Transform ItemContainer;
+    public Canvas ParentCanvas;
+    public Button UseButton;
+    public Button InspectButton;
+    public Button DiscardButton;
 
     private void OnEnable()
     {
@@ -42,13 +47,22 @@ class InventoryUI : MonoBehaviour
             GameObject itemSlot = Instantiate(Resources.Load<GameObject>("Prefabs/ItemSlot"), ItemContainer, false);
             itemSlot.transform.Find("ItemIcon").GetComponent<Image>().sprite = ItemsList.Items[slot.ItemID].Sprite;
             itemSlot.transform.Find("ItemName").GetComponent<TextMeshProUGUI>().text = ItemsList.Items[slot.ItemID].DisplayName;
-            itemSlot.GetComponent<Button>().onClick.AddListener(() => UseItem(slot.ItemID));
+            itemSlot.GetComponent<Button>().onClick.AddListener(() => OpenOptionsPanel(slot.ItemID));
         }
     }
-    private void UseItem(int ID)
+    private void OpenOptionsPanel(int itemID)
     {
-        ItemsList.Items[ID].Use();
-        UpdateInventory();
+        UseButton.onClick.AddListener(() => UseItem(itemID));
+        InspectButton.onClick.AddListener(() => InspectItem(itemID));
+        DiscardButton.onClick.AddListener(() => DiscardItem(itemID));
+
+        OptionsPanel.SetActive(true);
+
+        Vector3 mousePosition = Input.mousePosition;
+        Vector2 localMousePosition;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(ParentCanvas.transform as RectTransform, mousePosition, ParentCanvas.worldCamera, out localMousePosition);
+        OptionsPanel.transform.position = ParentCanvas.transform.TransformPoint(localMousePosition);
     }
     private void CloseInventory()
     {
@@ -62,5 +76,21 @@ class InventoryUI : MonoBehaviour
 
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
+    }
+    private void UseItem(int itemID)
+    {
+        ItemsList.Items[itemID].Use();
+        UpdateInventory();
+        OptionsPanel.SetActive(false);
+    }
+    private void InspectItem(int itemID)
+    {
+        OptionsPanel.SetActive(false);
+    }
+    private void DiscardItem(int itemID)
+    {
+        Player.Inventory.Remove(ItemsList.Items[itemID]);
+        UpdateInventory();
+        OptionsPanel.SetActive(false);
     }
 }
