@@ -51,5 +51,6 @@ public enum TypesOfControl
 {
     PlayerControl,
     InventoryControl,
-    InteractionControl
+    InteractionControl,
+    InspectionControll
 }
