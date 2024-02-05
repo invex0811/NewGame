@@ -24,6 +24,11 @@ public class InspectionController : MonoBehaviour, IDragHandler
     {
         Instance = this;
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.CloseInventory]) || Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.AlternativeCloseInventory]))
+            CloseInspectionPanel();
+    }
 
     private void CloseInspectionPanel()
     {
