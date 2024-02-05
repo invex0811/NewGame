@@ -1,5 +1,6 @@
 using UnityEngine;
-public class ItemID : MonoBehaviour
+
+public class EntityID : MonoBehaviour
 {
     public int ID;
 }

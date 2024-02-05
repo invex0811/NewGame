@@ -1,22 +1,29 @@
+using System.Security.Cryptography;
 using UnityEngine;
 [System.Serializable]
 
 class VideoTape : Item
 {
+    private int _id;
     private string _displayName;
     private string _description;
+    private string _raycastFeedbackText;
     private Sprite _sprite;
     private GameObject _prefab;
 
+    public override int ID => _id;
     public override string DisplayName => _displayName;
     public override string Description => _description;
+    public override string RaycastFeedbackText => _raycastFeedbackText;
     public override Sprite Sprite => _sprite;
     public override GameObject Prefab => _prefab;
 
-    public VideoTape(string displayName, string description, Sprite icon, GameObject prefab)
+    public VideoTape(int id, string displayName, string description, string raycastFeedbackText, Sprite icon, GameObject prefab)
     {
+        _id = id;
         _displayName = displayName;
         _description = description;
+        _raycastFeedbackText = raycastFeedbackText;
         _sprite = icon;
         _prefab = prefab;
     }
@@ -29,8 +36,10 @@ class VideoTape : Item
         Player.Inventory.Remove(this);
         Debug.Log("Tape inserted.");
     }
-    public override void PickUp()
+    public override bool Interact()
     {
         Player.Inventory.Add(this);
+
+        return true;
     }
 }

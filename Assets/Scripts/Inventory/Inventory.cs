@@ -10,13 +10,13 @@ class Inventory
         if (Slots.Count >= 30)
             return;
 
-        InventorySlot newSlot = new(ItemsList.GetID(item));
+        InventorySlot newSlot = new(EntitiesList.GetID(item));
         Slots.Add(newSlot);
     }
 
     public void Remove(Item item)
     {
-        int index = Slots.IndexOf(Slots.Find(s => s.ItemID == ItemsList.GetID(item)));
+        int index = Slots.IndexOf(Slots.Find(s => s.ItemID == EntitiesList.GetID(item)));
 
         if (Slots[index] != null)
             Slots.Remove(Slots[index]);

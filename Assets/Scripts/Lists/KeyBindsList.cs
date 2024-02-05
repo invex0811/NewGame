@@ -13,6 +13,7 @@ static class KeyBindsList
     public static readonly Dictionary<InventoryControllBindTypes, KeyCode> InventoryControllBinds = new()
     {
         {InventoryControllBindTypes.CloseInventory, KeyCode.Escape},
+        {InventoryControllBindTypes.AlternativeCloseInventory, KeyCode.I },
     };
     public static readonly Dictionary<InteractionControllBindTypes, KeyCode> InteractionControllBinds = new()
     {
@@ -29,7 +30,8 @@ enum PlayerControllBindTypes
 }
 enum InventoryControllBindTypes
 {
-    CloseInventory
+    CloseInventory,
+    AlternativeCloseInventory
 }
 enum InteractionControllBindTypes
 {
