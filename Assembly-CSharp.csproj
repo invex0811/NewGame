@@ -71,7 +71,6 @@
     <Compile Include="Assets\Scripts\Lists\EntitiesList.cs" />
     <Compile Include="Assets\Scripts\Items\Key.cs" />
     <Compile Include="Assets\Scripts\Controllers\InspectionController.cs" />
-    <Compile Include="Assets\Scripts\Items\ItemTemp.cs" />
     <Compile Include="Assets\Scripts\Entities\Painting.cs" />
     <Compile Include="Assets\Scripts\Controllers\InteractionController.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />

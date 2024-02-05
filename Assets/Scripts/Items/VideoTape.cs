@@ -1,15 +1,14 @@
-using System.Security.Cryptography;
 using UnityEngine;
-[System.Serializable]
 
+[System.Serializable]
 class VideoTape : Item
 {
-    private int _id;
-    private string _displayName;
-    private string _description;
-    private string _raycastFeedbackText;
-    private Sprite _sprite;
-    private GameObject _prefab;
+    private readonly int _id;
+    private readonly string _displayName;
+    private readonly string _description;
+    private readonly string _raycastFeedbackText;
+    private readonly Sprite _sprite;
+    private readonly GameObject _prefab;
 
     public override int ID => _id;
     public override string DisplayName => _displayName;

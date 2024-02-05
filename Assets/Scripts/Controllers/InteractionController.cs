@@ -3,7 +3,6 @@ using TMPro;
 
 public class InteractionController : MonoBehaviour
 {
-
     public static InteractionController Instance;
 
     public GameObject InspectionPanel;

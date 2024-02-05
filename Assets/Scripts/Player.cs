@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 static class Player
 {
     private static float _moveSpeed = 20f;

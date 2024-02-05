@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 class Inventory
 {
@@ -13,7 +12,6 @@ class Inventory
         InventorySlot newSlot = new(EntitiesList.GetID(item));
         Slots.Add(newSlot);
     }
-
     public void Remove(Item item)
     {
         int index = Slots.IndexOf(Slots.Find(s => s.ItemID == EntitiesList.GetID(item)));

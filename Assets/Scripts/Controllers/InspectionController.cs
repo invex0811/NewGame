@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using static UnityEditor.Progress;
-using System;
 
 public class InspectionController : MonoBehaviour, IDragHandler
 {
@@ -20,6 +16,7 @@ public class InspectionController : MonoBehaviour, IDragHandler
     public TextMeshProUGUI ObjectName;
     public TextMeshProUGUI ObjectDescription;
 
+
     private void Awake()
     {
         Instance = this;
@@ -28,6 +25,10 @@ public class InspectionController : MonoBehaviour, IDragHandler
     {
         if (Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.CloseInventory]) || Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.AlternativeCloseInventory]))
             CloseInspectionPanel();
+    }
+    private void OnDisable()
+    {
+        CloseInspectionPanelButton.onClick.RemoveAllListeners();
     }
 
     private void CloseInspectionPanel()
@@ -47,11 +48,6 @@ public class InspectionController : MonoBehaviour, IDragHandler
         }
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (_inspectablePrefab != null)
-            _inspectablePrefab.transform.eulerAngles += new Vector3(-eventData.delta.y / 3, -eventData.delta.x / 3);
-    }
     public void Initialize(int objectID)
     {
         _item = EntitiesList.Entities[objectID];
@@ -68,5 +64,10 @@ public class InspectionController : MonoBehaviour, IDragHandler
 
         ObjectName.text = _item.DisplayName;
         ObjectDescription.text = _item.Description;
+    }
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (_inspectablePrefab != null)
+            _inspectablePrefab.transform.eulerAngles += new Vector3(-eventData.delta.y / 3, -eventData.delta.x / 3);
     }
 }

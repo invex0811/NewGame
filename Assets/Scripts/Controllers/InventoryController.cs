@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class InventoryController : MonoBehaviour
 {
@@ -68,21 +64,6 @@ public class InventoryController : MonoBehaviour
         Player.Inventory.Remove(item);
         UpdateInventory();
     }
-    public void CloseInventory()
-    {
-        CloseOptionsPanel();
-
-        PlayerController.Instance.enabled = true;
-        CameraController.Instance.enabled = true;
-
-        GameManager.ChangeTypeOfControll(TypesOfControl.PlayerControl);
-        GameManager.TogglePause();
-
-        gameObject.SetActive(false);
-
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-        UnityEngine.Cursor.visible = false;
-    }
     private void CloseOptionsPanel()
     {
         UseButton.onClick.RemoveAllListeners();
@@ -110,5 +91,20 @@ public class InventoryController : MonoBehaviour
         }
 
         CloseOptionsPanel();
+    }
+    public void CloseInventory()
+    {
+        CloseOptionsPanel();
+
+        PlayerController.Instance.enabled = true;
+        CameraController.Instance.enabled = true;
+
+        GameManager.ChangeTypeOfControll(TypesOfControl.PlayerControl);
+        GameManager.TogglePause();
+
+        gameObject.SetActive(false);
+
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible = false;
     }
 }

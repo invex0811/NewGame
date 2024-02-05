@@ -1,7 +1,5 @@
 using System.Collections;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,7 +12,6 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance;
 
     public GameObject PlayerBody;
-    public Transform UI;
 
     private void Awake()
     {
@@ -26,7 +23,6 @@ public class PlayerController : MonoBehaviour
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
     }
-
     private void Update()
     {
         if (GameManager.TypeOfControl != TypesOfControl.PlayerControl)
@@ -38,10 +34,17 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.Crouch]) && _isCrouchEnabled)
             StartCoroutine(Crouch());
 
-        if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.OpenInventory]))
-            OpenInventory();
-
         MovePlayer();
+    }
+
+    private void MovePlayer()
+    {
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+
+        Vector3 moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
+
+        _controller.Move(Player.MoveSpeed * Time.deltaTime * moveDirection);
     }
     private IEnumerator Crouch()
     {
@@ -68,33 +71,5 @@ public class PlayerController : MonoBehaviour
         _isCrouchEnabled = true;
 
         yield return null;
-    }
-    private void MovePlayer()
-    {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        Vector3 moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
-
-        _controller.Move(Player.MoveSpeed * Time.deltaTime * moveDirection);
-    }
-
-    public void OpenInventory()
-    {
-        CameraController.Instance.enabled = false;
-        this.enabled = false;
-
-        GameManager.TogglePause();
-
-        if (InteractionController.Instance.CurrentInteraction == InteractionType.None)
-            GameManager.ChangeTypeOfControll(TypesOfControl.InventoryControl);
-        else
-            GameManager.ChangeTypeOfControll(TypesOfControl.InteractionControl);
-
-        UIController.Instance.OpenInventory();
-        UI.SetParent(GameManager.CurrentCamera.transform, false);
-
-        UnityEngine.Cursor.lockState = CursorLockMode.None;
-        UnityEngine.Cursor.visible = true;
     }
 }

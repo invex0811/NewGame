@@ -44,6 +44,7 @@ static class EntitiesList
             null
             )
     };
+
     public static int GetID(Entity entity)
     {
         return Entities.IndexOf(entity);

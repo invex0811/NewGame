@@ -1,15 +1,12 @@
-using Unity.Burst.CompilerServices;
 using UnityEngine;
-using UnityEngine.Rendering.HighDefinition;
 
 class TV : Entity
 {
-
-    private int _id;
-    private string _displayName;
-    private string _description;
-    private string _raycastFeedbackText;
-    private GameObject _prefab;
+    private readonly int _id;
+    private readonly string _displayName;
+    private readonly string _description;
+    private readonly string _raycastFeedbackText;
+    private readonly GameObject _prefab;
 
     public override int ID => _id;
     public override string DisplayName => _displayName;
@@ -32,7 +29,7 @@ class TV : Entity
         InteractionController.Instance.InteractionPoint = point;
         InteractionController.Instance.CurrentInteraction = InteractionType.TV;
 
-        PlayerController.Instance.OpenInventory();
+        UIController.Instance.OpenInventory();
         PlayerController.Instance.enabled = false;
         InteractionController.Instance.MoveToInteractionPoint();
 
