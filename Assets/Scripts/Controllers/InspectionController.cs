@@ -2,20 +2,23 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEditor.ProjectWindowCallback;
+using System;
+using UnityEditor.Experimental.GraphView;
 
 public class InspectionController : MonoBehaviour, IDragHandler
 {
+    [SerializeField] private GameObject _inspectionPanel;
+    [SerializeField] private Camera _inspectionCamera;
+    [SerializeField] private Button _closeInspectionPanelButton;
+    [SerializeField] private TextMeshProUGUI _objectName;
+    [SerializeField] private TextMeshProUGUI _objectDescription;
+
     private GameObject _inspectablePrefab;
-    private Entity _item;
+    private Quaternion _initialEntityRotation;
+    private float _currentZoom;
 
     public static InspectionController Instance;
-
-    public GameObject InspectionPanel;
-    public Camera InspectionCamera;
-    public Button CloseInspectionPanelButton;
-    public TextMeshProUGUI ObjectName;
-    public TextMeshProUGUI ObjectDescription;
-
 
     private void Awake()
     {
@@ -25,18 +28,53 @@ public class InspectionController : MonoBehaviour, IDragHandler
     {
         if (Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.CloseInventory]) || Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.AlternativeCloseInventory]))
             CloseInspectionPanel();
+        if (Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.ResetInspectionPanel]))
+            ResetPanel();
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+            ZoomIn();
+        if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+            ZoomOut();
+    }
+
+    private void OnEnable()
+    {
+        _closeInspectionPanelButton.onClick.AddListener(() => CloseInspectionPanel());
+        InteractionController.Instance.OnInspect += Initialize;
+
+        if (InventoryController.Instance != null)
+            InventoryController.Instance.OnInspect += Initialize;
     }
     private void OnDisable()
     {
-        CloseInspectionPanelButton.onClick.RemoveAllListeners();
+        _closeInspectionPanelButton.onClick.RemoveAllListeners();
+        InteractionController.Instance.OnInspect -= Initialize;
+
+        if(InventoryController.Instance != null)
+            InventoryController.Instance.OnInspect -= Initialize;
     }
 
+    private void Initialize(int entityID)
+    {
+        _inspectionPanel.SetActive(true);
+        Entity item = EntitiesList.Entities[entityID];
+
+        if (_inspectablePrefab != null)
+            Destroy(_inspectablePrefab);
+
+        _inspectablePrefab = Instantiate(item.Prefab, new Vector3(1000, 1000, 1000), new Quaternion(0, 180, 0, 0));
+        _initialEntityRotation = _inspectablePrefab.transform.rotation;
+
+        _inspectionCamera.enabled = true;
+        _inspectionCamera.transform.position = new Vector3(1000, 1000, 995);
+        _inspectionCamera.transform.eulerAngles = new Vector3(0, 0, 0);
+
+        _objectName.text = item.DisplayName;
+        _objectDescription.text = item.Description;
+    }
     private void CloseInspectionPanel()
     {
-        CloseInspectionPanelButton.onClick.RemoveAllListeners();
-
-        InspectionPanel.SetActive(false);
-        InspectionCamera.enabled = false;
+        _inspectionPanel.SetActive(false);
+        _inspectionCamera.enabled = false;
 
         if(GameManager.TypeOfControl == TypesOfControl.InspectionControll)
         {
@@ -46,28 +84,41 @@ public class InspectionController : MonoBehaviour, IDragHandler
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-    }
 
-    public void Initialize(int objectID)
+        enabled = false;
+    }
+    private void ResetPanel()
     {
-        _item = EntitiesList.Entities[objectID];
+        _inspectablePrefab.transform.rotation = _initialEntityRotation;
+        _currentZoom = 0;
+        _inspectionCamera.transform.position = new Vector3(1000, 1000, 995 + _currentZoom);
 
-        if (_inspectablePrefab != null)
-            Destroy(_inspectablePrefab);
-
-        _inspectablePrefab = Instantiate(_item.Prefab, new Vector3(1000, 1000, 1000), new Quaternion(0, 180, 0, 0));
-
-        CloseInspectionPanelButton.onClick.AddListener(() => CloseInspectionPanel());
-
-        InspectionCamera.enabled = true;
-        InspectionPanel.SetActive(true);
-
-        ObjectName.text = _item.DisplayName;
-        ObjectDescription.text = _item.Description;
     }
+    private void ZoomIn()
+    {
+        _currentZoom += 0.1f;
+
+        if (_currentZoom > 2.5f)
+            _currentZoom = 2.5f;
+
+        _inspectionCamera.transform.position = new Vector3(1000, 1000, 995 + _currentZoom);
+    }
+    private void ZoomOut()
+    {
+        _currentZoom -= 0.1f;
+
+        if (_currentZoom < 0)
+            _currentZoom = 0;
+
+        _inspectionCamera.transform.position = new Vector3(1000, 1000, 995 + _currentZoom);
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
         if (_inspectablePrefab != null)
-            _inspectablePrefab.transform.eulerAngles += new Vector3(-eventData.delta.y / 3, -eventData.delta.x / 3);
+        {
+            _inspectablePrefab.transform.Rotate(Vector3.left, eventData.delta.y / 3);
+            _inspectablePrefab.transform.Rotate(Vector3.down, eventData.delta.x / 3);
+        }
     }
 }

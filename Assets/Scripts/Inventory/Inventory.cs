@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 class Inventory
@@ -11,6 +12,8 @@ class Inventory
 
         InventorySlot newSlot = new(EntitiesList.GetID(item));
         Slots.Add(newSlot);
+
+        OnSlotsChanged?.Invoke();
     }
     public void Remove(Item item)
     {
@@ -18,5 +21,9 @@ class Inventory
 
         if (Slots[index] != null)
             Slots.Remove(Slots[index]);
+
+        OnSlotsChanged?.Invoke();
     }
+
+    public event Action OnSlotsChanged;
 }

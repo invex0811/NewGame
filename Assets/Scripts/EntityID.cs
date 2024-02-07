@@ -2,5 +2,10 @@ using UnityEngine;
 
 public class EntityID : MonoBehaviour
 {
-    public int ID;
+    [SerializeField] private int _id;
+
+    public int ID
+    {
+        get => _id;
+    }
 }

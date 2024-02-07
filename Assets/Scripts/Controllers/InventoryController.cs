@@ -4,24 +4,20 @@ using UnityEngine.UI;
 
 public class InventoryController : MonoBehaviour
 {
-    public static InventoryController Instance;
+    [SerializeField] private GameObject _inventory;
+    [SerializeField] private GameObject _optionsPanel;
+    [SerializeField] private Transform _itemContainer;
+    [SerializeField] private Canvas _parentCanvas;
+    [SerializeField] private Button _useButton;
+    [SerializeField] private Button _inspectButton;
+    [SerializeField] private Button _discardButton;
+    [SerializeField] private Button _cancelButton;
 
-    public GameObject OptionsPanel;
-    public GameObject InspectionPanel;
-    public Transform ItemContainer;
-    public Canvas ParentCanvas;
-    public Button UseButton;
-    public Button InspectButton;
-    public Button DiscardButton;
-    public Button CancelButton;
+    public static InventoryController Instance;
 
     private void Awake()
     {
         Instance = this;
-    }
-    private void OnEnable()
-    {
-        UpdateInventory();
     }
     private void Update()
     {
@@ -30,53 +26,57 @@ public class InventoryController : MonoBehaviour
             if (Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.CloseInventory]) || Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.AlternativeCloseInventory]))
                 CloseInventory();
         }
+
+        if (GameManager.TypeOfControl == TypesOfControl.InteractionControl && Input.GetKeyDown(KeyBindsList.InventoryControllBinds[InventoryControllBindTypes.CloseInventory]))
+            CloseInventory();
+    }
+    private void OnEnable()
+    {
+        _inventory.SetActive(true);
+        Player.Inventory.OnSlotsChanged += UpdateInventory;
+        UpdateInventory();
+    }
+    private void OnDisable()
+    {
+        _inventory.SetActive(false);
+        Player.Inventory.OnSlotsChanged -= UpdateInventory;
     }
 
     private void OpenOptionsPanel(int itemID)
     {
-        UseButton.onClick.AddListener(() => UseItem(itemID));
-        InspectButton.onClick.AddListener(() => InspectItem(itemID));
-        DiscardButton.onClick.AddListener(() => DiscardItem(itemID));
-        CancelButton.onClick.AddListener(() => CloseOptionsPanel());
+        _useButton.onClick.AddListener(() => UseItem(itemID));
+        _inspectButton.onClick.AddListener(() => InspectItem(itemID));
+        _discardButton.onClick.AddListener(() => DiscardItem(itemID));
+        _cancelButton.onClick.AddListener(() => CloseOptionsPanel());
 
-        OptionsPanel.SetActive(true);
+        _optionsPanel.SetActive(true);
 
         Vector3 mousePosition = Input.mousePosition;
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(ParentCanvas.transform as RectTransform, mousePosition, ParentCanvas.worldCamera, out Vector2 localMousePosition);
-        OptionsPanel.transform.position = ParentCanvas.transform.TransformPoint(localMousePosition);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_parentCanvas.transform as RectTransform, mousePosition, _parentCanvas.worldCamera, out Vector2 localMousePosition);
+        _optionsPanel.transform.position = _parentCanvas.transform.TransformPoint(localMousePosition);
     }
     private void UseItem(int itemID)
     {
         Item item = EntitiesList.Entities[itemID] as Item;
         item.Use();
-        UpdateInventory();
+        CloseOptionsPanel();
     }
     private void InspectItem(int itemID)
     {
-        InspectionPanel.SetActive(true);
-        InspectionController.Instance.Initialize(itemID);
-        UpdateInventory();
+        InspectionController.Instance.enabled = true;
+        OnInspect?.Invoke(itemID);
+        CloseOptionsPanel();
     }
     private void DiscardItem(int itemID)
     {
         Item item = EntitiesList.Entities[itemID] as Item;
         Player.Inventory.Remove(item);
-        UpdateInventory();
+        CloseOptionsPanel();
     }
-    private void CloseOptionsPanel()
+    private void UpdateInventory()
     {
-        UseButton.onClick.RemoveAllListeners();
-        InspectButton.onClick.RemoveAllListeners();
-        DiscardButton.onClick.RemoveAllListeners();
-        CancelButton.onClick.RemoveAllListeners();
-
-        OptionsPanel.SetActive(false);
-    }
-
-    public void UpdateInventory()
-    {
-        foreach (Transform itemSlot in ItemContainer)
+        foreach (Transform itemSlot in _itemContainer)
         {
             Destroy(itemSlot.gameObject);
         }
@@ -84,15 +84,22 @@ public class InventoryController : MonoBehaviour
         foreach (InventorySlot slot in Player.Inventory.Slots)
         {
             Item item = EntitiesList.Entities[slot.ItemID] as Item;
-            GameObject itemSlot = Instantiate(Resources.Load<GameObject>("Prefabs/ItemSlot"), ItemContainer, false);
+            GameObject itemSlot = Instantiate(Resources.Load<GameObject>("Prefabs/ItemSlot"), _itemContainer, false);
             itemSlot.transform.Find("ItemIcon").GetComponent<Image>().sprite = item.Sprite;
             itemSlot.transform.Find("ItemName").GetComponent<TextMeshProUGUI>().text = item.DisplayName;
             itemSlot.GetComponent<Button>().onClick.AddListener(() => OpenOptionsPanel(slot.ItemID));
         }
-
-        CloseOptionsPanel();
     }
-    public void CloseInventory()
+    private void CloseOptionsPanel()
+    {
+        _useButton.onClick.RemoveAllListeners();
+        _inspectButton.onClick.RemoveAllListeners();
+        _discardButton.onClick.RemoveAllListeners();
+        _cancelButton.onClick.RemoveAllListeners();
+
+        _optionsPanel.SetActive(false);
+    }
+    private void CloseInventory()
     {
         CloseOptionsPanel();
 
@@ -102,9 +109,12 @@ public class InventoryController : MonoBehaviour
         GameManager.ChangeTypeOfControll(TypesOfControl.PlayerControl);
         GameManager.TogglePause();
 
-        gameObject.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-        UnityEngine.Cursor.visible = false;
+        enabled = false;
     }
+
+    public delegate void Action(int entityID);
+    public event Action OnInspect;
 }

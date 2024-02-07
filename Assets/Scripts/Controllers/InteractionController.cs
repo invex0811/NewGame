@@ -3,16 +3,24 @@ using TMPro;
 
 public class InteractionController : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI _hoverText;
+    [SerializeField] private LayerMask _interactableLayer;
+    [SerializeField] private InteractionType _currentInteraction;
+    [SerializeField] private float _interactionDistance = 10f;
+
+    private Transform _interactionPoint;
+
     public static InteractionController Instance;
 
-    public GameObject InspectionPanel;
-    public Camera MainCamera;
-    public Camera InteractionCamera;
-    public Transform InteractionPoint;
-    public TextMeshProUGUI HoverText;
-    public LayerMask InteractableLayer;
-    public InteractionType CurrentInteraction;
-    public float InteractionDistance = 10f;
+    public Transform InteractionPoint
+    {
+        set => _interactionPoint = value;
+    }
+    public InteractionType CurrentInteraction
+    {
+        get => _currentInteraction;
+        set => _currentInteraction = value;
+    }
 
     private void Awake()
     {
@@ -28,35 +36,25 @@ public class InteractionController : MonoBehaviour
 
         if (CurrentInteraction != InteractionType.None && GameManager.TypeOfControl == TypesOfControl.InteractionControl && Input.GetKeyDown(KeyBindsList.InteractionControllBinds[InteractionControllBindTypes.StopInteraction]))
         {
-            GameManager.SwitchCamera(MainCamera);
             ReturnToInteractionPosition();
             PlayerController.Instance.enabled = true;
             CurrentInteraction = InteractionType.None;
-            InventoryController.Instance.CloseInventory();
             return;
         }
     }
 
     private void ReturnToInteractionPosition()
     {
-        ToogleIntercationCamera();
-    }
-    private void ToogleIntercationCamera()
-    {
-        if (MainCamera == null || InteractionCamera == null) return;
-        InteractionCamera.enabled = !InteractionCamera.enabled;
-        MainCamera.enabled = !MainCamera.enabled;
+        Transform initialPoint = InteractionPoints.Instance.InitialCameraPosition.transform;
+        Camera.main.transform.SetLocalPositionAndRotation(initialPoint.localPosition, initialPoint.localRotation);
     }
     private void InteractionRayCast()
     {
-        HoverText.text = "";
+        _hoverText.text = "";
 
-        if (GameManager.CurrentCamera != MainCamera)
-            return;
+        Ray ray = Camera.main.ScreenPointToRay(_hoverText.transform.position);
 
-        Ray ray = MainCamera.ScreenPointToRay(HoverText.transform.position);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, InteractionDistance, InteractableLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, _interactionDistance, _interactableLayer))
         {
             if (hit.collider == null)
                 return;
@@ -71,7 +69,7 @@ public class InteractionController : MonoBehaviour
                 return;
             }
 
-            HoverText.text = EntitiesList.Entities[entityID].RaycastFeedbackText;
+            _hoverText.text = EntitiesList.Entities[entityID].RaycastFeedbackText;
         }
     }
 
@@ -80,19 +78,19 @@ public class InteractionController : MonoBehaviour
         GameManager.ChangeTypeOfControll(TypesOfControl.InspectionControll);
         PlayerController.Instance.enabled = false;
 
-        InspectionPanel.SetActive(true);
-        InspectionController.Instance.Initialize(entityID);
+        InspectionController.Instance.enabled = true;
+        OnInspect?.Invoke(entityID);
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
     public void MoveToInteractionPoint()
     {
-        GameManager.SwitchCamera(InteractionCamera);
-        ToogleIntercationCamera();
-
-        InteractionCamera.transform.SetPositionAndRotation(InteractionPoint.position, InteractionPoint.rotation);
+        Camera.main.transform.SetPositionAndRotation(_interactionPoint.position, _interactionPoint.rotation);
     }
+
+    public delegate void Action(int entityID);
+    public event Action OnInspect;
 }
 
 public enum InteractionType

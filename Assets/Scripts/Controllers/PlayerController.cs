@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private GameObject _playerBody;
+
+    private CharacterController _controller;
     private float _squatDuration = 0.5f;
     private float _squatDepth = 2f;
     private bool _isCrouchEnabled = true;
     private bool _isCrouch = false;
-    private CharacterController _controller;
 
     public static PlayerController Instance;
-
-    public GameObject PlayerBody;
 
     private void Awake()
     {
@@ -20,8 +20,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _controller = GetComponent<CharacterController>();
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-        UnityEngine.Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
     private void Update()
     {
@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
         _isCrouchEnabled = false;
 
         float elapsedTime = 0f;
-        float targetScale = PlayerBody.transform.localScale.y;
+        float targetScale = _playerBody.transform.localScale.y;
         if (!_isCrouch)
             targetScale -= _squatDepth;
         if (_isCrouch)
@@ -59,13 +59,13 @@ public class PlayerController : MonoBehaviour
 
         while (elapsedTime < _squatDuration)
         {
-            PlayerBody.transform.localScale = Vector3.Lerp(PlayerBody.transform.localScale, new Vector3(PlayerBody.transform.localScale.x, targetScale, PlayerBody.transform.localScale.z), elapsedTime);
+            _playerBody.transform.localScale = Vector3.Lerp(_playerBody.transform.localScale, new Vector3(_playerBody.transform.localScale.x, targetScale, _playerBody.transform.localScale.z), elapsedTime);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        PlayerBody.transform.localScale = new Vector3(PlayerBody.transform.localScale.x, targetScale, PlayerBody.transform.localScale.z);
+        _playerBody.transform.localScale = new Vector3(_playerBody.transform.localScale.x, targetScale, _playerBody.transform.localScale.z);
 
         _isCrouch = !_isCrouch;
         _isCrouchEnabled = true;
