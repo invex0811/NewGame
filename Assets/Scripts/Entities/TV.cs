@@ -23,7 +23,7 @@ class TV : Entity
         _prefab = prefab;
     }
 
-    public override bool Interact()
+    public override void Interact(GameObject obj)
     {
         Transform point = InteractionPoints.Instance.TV.transform;
         InteractionController.Instance.InteractionPoint = point;
@@ -32,7 +32,5 @@ class TV : Entity
         UIController.Instance.OpenInventory();
         PlayerController.Instance.enabled = false;
         InteractionController.Instance.MoveToInteractionPoint();
-
-        return false;
     }
 }

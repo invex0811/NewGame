@@ -63,8 +63,7 @@ public class InteractionController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.Interact]))
             {
-                if (EntitiesList.Entities[entityID].Interact())
-                    Destroy(hit.collider.gameObject);
+                EntitiesList.Entities[entityID].Interact(hit.collider.gameObject);
 
                 return;
             }

@@ -2,9 +2,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEditor.ProjectWindowCallback;
-using System;
-using UnityEditor.Experimental.GraphView;
 
 public class InspectionController : MonoBehaviour, IDragHandler
 {

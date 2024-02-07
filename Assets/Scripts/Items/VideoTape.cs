@@ -35,10 +35,10 @@ class VideoTape : Item
         Player.Inventory.Remove(this);
         Debug.Log("Tape inserted.");
     }
-    public override bool Interact()
+    public override void Interact(GameObject obj)
     {
         Player.Inventory.Add(this);
 
-        return true;
+        Object.Destroy(obj);
     }
 }

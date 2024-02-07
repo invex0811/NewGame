@@ -23,10 +23,8 @@ class Painting : Entity
         _prefab = prefab;
     }
 
-    public override bool Interact()
+    public override void Interact(GameObject obj)
     {
         InteractionController.Instance.InspectEntity(ID);
-
-        return false;
     }
 }

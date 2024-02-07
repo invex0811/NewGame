@@ -31,10 +31,10 @@ class Note : Item
     {
         Debug.Log("Note read.");
     }
-    public override bool Interact()
+    public override void Interact(GameObject obj)
     {
         Player.Inventory.Add(this);
 
-        return true;
+        Object.Destroy(obj);
     }
 }

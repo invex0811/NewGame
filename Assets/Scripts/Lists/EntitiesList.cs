@@ -42,6 +42,13 @@ static class EntitiesList
             "",
             "Inspect",
             null
+            ),
+        new Door(
+            5,
+            "Door",
+            "",
+            "Interact",
+            null
             )
     };
 
