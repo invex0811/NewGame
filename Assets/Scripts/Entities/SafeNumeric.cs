@@ -1,6 +1,6 @@
 using UnityEngine;
 
-class TV : Entity
+class SafeNumeric : Entity
 {
     private readonly int _id;
     private readonly string _displayName;
@@ -8,13 +8,15 @@ class TV : Entity
     private readonly string _raycastFeedbackText;
     private readonly GameObject _prefab;
 
+    private GameObject _currentObject;
+
     public override int ID => _id;
     public override string DisplayName => _displayName;
     public override string Description => _description;
     public override string RaycastFeedbackText => _raycastFeedbackText;
     public override GameObject Prefab => _prefab;
 
-    public TV(int id, string displayName, string description, string raycastFeedbackText, GameObject prefab)
+    public SafeNumeric(int id, string displayName, string description, string raycastFeedbackText, GameObject prefab)
     {
         _id = id;
         _displayName = displayName;
@@ -25,26 +27,43 @@ class TV : Entity
 
     public override void Interact(GameObject obj)
     {
+        _currentObject = obj;
         GameManager.PauseGame();
+        GameManager.ChangeTypeOfControll(TypesOfControl.InteractionControl);
 
-        Transform point = InteractionPoints.Instance.TV.transform;
+        Transform point = InteractionPoints.Instance.SafeNumeric.transform;
         InteractionController.Instance.InteractionPoint = point;
-        InteractionController.Instance.CurrentInteraction = InteractionType.TV;
+        InteractionController.Instance.CurrentInteraction = InteractionType.SafeNumeric;
         InteractionController.Instance.MoveToInteractionPoint();
 
         InteractionController.Instance.OnStopInteraction += StopInteraction;
 
-        UIController.Instance.OpenInventory();
         PlayerController.Instance.enabled = false;
-    }
+        CameraController.Instance.enabled = false;
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        _currentObject.GetComponentInChildren<SafeDoorController>().enabled = true;
+    }
     public override void StopInteraction()
     {
+        _currentObject.GetComponentInChildren<SafeDoorController>().enabled = false;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        PlayerController.Instance.enabled = true;
+        CameraController.Instance.enabled = true;
+
         InteractionController.Instance.OnStopInteraction -= StopInteraction;
 
-        InteractionController.Instance.ReturnToInteractionPosition();
         InteractionController.Instance.CurrentInteraction = InteractionType.None;
+        InteractionController.Instance.ReturnToInteractionPosition();
 
+        GameManager.ChangeTypeOfControll(TypesOfControl.PlayerControl);
         GameManager.ResumeGame();
+
+        _currentObject = null;
     }
 }

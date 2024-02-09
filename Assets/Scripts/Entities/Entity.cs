@@ -10,4 +10,5 @@ abstract class Entity
     public abstract GameObject Prefab { get; }
 
     public abstract void Interact(GameObject obj);
+    public abstract void StopInteraction();
 }

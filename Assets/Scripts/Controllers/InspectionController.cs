@@ -35,39 +35,20 @@ public class InspectionController : MonoBehaviour, IDragHandler
 
     private void OnEnable()
     {
-        _closeInspectionPanelButton.onClick.AddListener(() => CloseInspectionPanel());
-        InteractionController.Instance.OnInspect += Initialize;
+        GameManager.PauseGame();
 
-        if (InventoryController.Instance != null)
-            InventoryController.Instance.OnInspect += Initialize;
+        PlayerController.Instance.enabled = false;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        _closeInspectionPanelButton.onClick.AddListener(() => CloseInspectionPanel());
     }
     private void OnDisable()
     {
         _closeInspectionPanelButton.onClick.RemoveAllListeners();
-        InteractionController.Instance.OnInspect -= Initialize;
-
-        if(InventoryController.Instance != null)
-            InventoryController.Instance.OnInspect -= Initialize;
     }
 
-    private void Initialize(int entityID)
-    {
-        _inspectionPanel.SetActive(true);
-        Entity item = EntitiesList.Entities[entityID];
-
-        if (_inspectablePrefab != null)
-            Destroy(_inspectablePrefab);
-
-        _inspectablePrefab = Instantiate(item.Prefab, new Vector3(1000, 1000, 1000), new Quaternion(0, 180, 0, 0));
-        _initialEntityRotation = _inspectablePrefab.transform.rotation;
-
-        _inspectionCamera.enabled = true;
-        _inspectionCamera.transform.position = new Vector3(1000, 1000, 995);
-        _inspectionCamera.transform.eulerAngles = new Vector3(0, 0, 0);
-
-        _objectName.text = item.DisplayName;
-        _objectDescription.text = item.Description;
-    }
     private void CloseInspectionPanel()
     {
         _inspectionPanel.SetActive(false);
@@ -75,6 +56,7 @@ public class InspectionController : MonoBehaviour, IDragHandler
 
         if(GameManager.TypeOfControl == TypesOfControl.InspectionControll)
         {
+            GameManager.ResumeGame();
             GameManager.ChangeTypeOfControll(TypesOfControl.PlayerControl);
             PlayerController.Instance.enabled = true;
 
@@ -110,6 +92,24 @@ public class InspectionController : MonoBehaviour, IDragHandler
         _inspectionCamera.transform.position = new Vector3(1000, 1000, 995 + _currentZoom);
     }
 
+    public void Initialize(int entityID)
+    {
+        _inspectionPanel.SetActive(true);
+        Entity item = EntitiesList.Entities[entityID];
+
+        if (_inspectablePrefab != null)
+            Destroy(_inspectablePrefab);
+
+        _inspectablePrefab = Instantiate(item.Prefab, new Vector3(1000, 1000, 1000), new Quaternion(0, 180, 0, 0));
+        _initialEntityRotation = _inspectablePrefab.transform.rotation;
+
+        _inspectionCamera.enabled = true;
+        _inspectionCamera.transform.position = new Vector3(1000, 1000, 995);
+        _inspectionCamera.transform.eulerAngles = new Vector3(0, 0, 0);
+
+        _objectName.text = item.DisplayName;
+        _objectDescription.text = item.Description;
+    }
     public void OnDrag(PointerEventData eventData)
     {
         if (_inspectablePrefab != null)

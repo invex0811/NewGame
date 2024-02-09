@@ -19,7 +19,7 @@ static class EntitiesList
             "Plays video if inserted into TV",
             "Pickup",
             Resources.Load<Sprite>("Sprites/E"),
-            Resources.Load<GameObject>("Prefabs/VideoTape/VideoTape")
+            Resources.Load<GameObject>("Prefabs/VideoTape")
             ),
         new Note(
             2,
@@ -48,6 +48,13 @@ static class EntitiesList
             "Door",
             "",
             "Interact",
+            null
+            ),
+        new SafeNumeric(
+            6,
+            "Safe",
+            "",
+            "Inspect",
             null
             )
     };

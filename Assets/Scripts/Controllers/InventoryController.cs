@@ -65,7 +65,8 @@ public class InventoryController : MonoBehaviour
     private void InspectItem(int itemID)
     {
         InspectionController.Instance.enabled = true;
-        OnInspect?.Invoke(itemID);
+        InspectionController.Instance.Initialize(itemID);
+
         CloseOptionsPanel();
     }
     private void DiscardItem(int itemID)
@@ -107,14 +108,11 @@ public class InventoryController : MonoBehaviour
         CameraController.Instance.enabled = true;
 
         GameManager.ChangeTypeOfControll(TypesOfControl.PlayerControl);
-        GameManager.TogglePause();
+        GameManager.ResumeGame();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         enabled = false;
     }
-
-    public delegate void Action(int entityID);
-    public event Action OnInspect;
 }

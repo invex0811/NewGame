@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 class Door : Entity
@@ -8,7 +7,6 @@ class Door : Entity
     private readonly string _description;
     private readonly string _raycastFeedbackText;
     private readonly GameObject _prefab;
-    private float _deltaTime;
 
     public override int ID => _id;
     public override string DisplayName => _displayName;
@@ -27,28 +25,16 @@ class Door : Entity
 
     public override void Interact(GameObject obj)
     {
-        Animator animator = obj.GetComponent<Animator>();
+        DoorController door = obj.GetComponent<DoorController>();
 
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-            animator.Play("DoorOpen");
-            _deltaTime = Time.time;
-        }
+        if (door.IsOpen)
+            door.CloseDoor();
+        else
+            door.OpenDoor();
+    }
 
-        if (animator.GetCurrentAnimatorStateInfo(0).length > Time.time - _deltaTime)
-            return;
-
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("DoorClose"))
-        {
-            animator.Play("DoorOpen");
-            _deltaTime = Time.time;
-            return;
-        }
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("DoorOpen"))
-        {
-            animator.Play("DoorClose");
-            _deltaTime = Time.time;
-            return;
-        }
+    public override void StopInteraction()
+    {
+        throw new System.NotImplementedException();
     }
 }

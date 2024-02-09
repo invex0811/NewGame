@@ -9,6 +9,8 @@ public class InteractionController : MonoBehaviour
     [SerializeField] private float _interactionDistance = 10f;
 
     private Transform _interactionPoint;
+    private Vector3 _initialCameraPosition;
+    private Quaternion _initialCameraRotation;
 
     public static InteractionController Instance;
 
@@ -36,18 +38,11 @@ public class InteractionController : MonoBehaviour
 
         if (CurrentInteraction != InteractionType.None && GameManager.TypeOfControl == TypesOfControl.InteractionControl && Input.GetKeyDown(KeyBindsList.InteractionControllBinds[InteractionControllBindTypes.StopInteraction]))
         {
-            ReturnToInteractionPosition();
-            PlayerController.Instance.enabled = true;
-            CurrentInteraction = InteractionType.None;
+            OnStopInteraction?.Invoke();
             return;
         }
     }
 
-    private void ReturnToInteractionPosition()
-    {
-        Transform initialPoint = InteractionPoints.Instance.InitialCameraPosition.transform;
-        Camera.main.transform.SetLocalPositionAndRotation(initialPoint.localPosition, initialPoint.localRotation);
-    }
     private void InteractionRayCast()
     {
         _hoverText.text = "";
@@ -72,28 +67,24 @@ public class InteractionController : MonoBehaviour
         }
     }
 
-    public void InspectEntity(int entityID)
-    {
-        GameManager.ChangeTypeOfControll(TypesOfControl.InspectionControll);
-        PlayerController.Instance.enabled = false;
-
-        InspectionController.Instance.enabled = true;
-        OnInspect?.Invoke(entityID);
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
     public void MoveToInteractionPoint()
     {
+        _initialCameraPosition = Camera.main.transform.localPosition;
+        _initialCameraRotation = Camera.main.transform.localRotation;
         Camera.main.transform.SetPositionAndRotation(_interactionPoint.position, _interactionPoint.rotation);
     }
+    public void ReturnToInteractionPosition()
+    {
+        Camera.main.transform.SetLocalPositionAndRotation(_initialCameraPosition, _initialCameraRotation);
+    }
 
-    public delegate void Action(int entityID);
-    public event Action OnInspect;
+    public delegate void StopInteractionEventHandler();
+    public event StopInteractionEventHandler OnStopInteraction;
 }
 
 public enum InteractionType
 {
     None,
-    TV
+    TV,
+    SafeNumeric
 }

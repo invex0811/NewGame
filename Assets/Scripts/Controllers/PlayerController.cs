@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
         if (GameManager.TypeOfControl != TypesOfControl.PlayerControl)
         {
             Debug.LogError("Type of controll conflict.");
+            Debug.Log(GameManager.TypeOfControl);
             return;
         }
 
@@ -35,6 +36,10 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Crouch());
 
         MovePlayer();
+    }
+    private void OnEnable()
+    {
+        GameManager.ChangeTypeOfControll(TypesOfControl.PlayerControl);
     }
 
     private void MovePlayer()

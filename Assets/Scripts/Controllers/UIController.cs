@@ -24,7 +24,7 @@ class UIController : MonoBehaviour
         CameraController.Instance.enabled = false;
         PlayerController.Instance.enabled = false;
 
-        GameManager.TogglePause();
+        GameManager.PauseGame();
 
         if (InteractionController.Instance.CurrentInteraction == InteractionType.None)
             GameManager.ChangeTypeOfControll(TypesOfControl.InventoryControl);

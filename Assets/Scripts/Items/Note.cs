@@ -37,4 +37,9 @@ class Note : Item
 
         Object.Destroy(obj);
     }
+
+    public override void StopInteraction()
+    {
+        throw new System.NotImplementedException();
+    }
 }
