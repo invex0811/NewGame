@@ -45,14 +45,17 @@ public class SafeDoorController : MonoBehaviour
     {
         _enteredCombination += character;
 
+        if (_enteredCombination.Length > _password.Length)
+        {
+            _enteredCombination = character;
+            _isLocked = true;
+        }
+
         if (_enteredCombination == _password)
         {
             _isLocked = false;
             return;
         }
-
-        if (_enteredCombination.Length == _password.Length)
-            _enteredCombination = "";
     }
     private void OpenDoor()
     {
