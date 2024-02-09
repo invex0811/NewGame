@@ -2,7 +2,7 @@ using UnityEngine;
 
 class SafeNumeric : Entity
 {
-    private readonly int _id;
+    private readonly TypesOfEntity _type;
     private readonly string _displayName;
     private readonly string _description;
     private readonly string _raycastFeedbackText;
@@ -10,15 +10,15 @@ class SafeNumeric : Entity
 
     private GameObject _currentObject;
 
-    public override int ID => _id;
+    public override TypesOfEntity Type => _type;
     public override string DisplayName => _displayName;
     public override string Description => _description;
     public override string RaycastFeedbackText => _raycastFeedbackText;
     public override GameObject Prefab => _prefab;
 
-    public SafeNumeric(int id, string displayName, string description, string raycastFeedbackText, GameObject prefab)
+    public SafeNumeric(TypesOfEntity type, string displayName, string description, string raycastFeedbackText, GameObject prefab)
     {
-        _id = id;
+        _type = type;
         _displayName = displayName;
         _description = description;
         _raycastFeedbackText = raycastFeedbackText;

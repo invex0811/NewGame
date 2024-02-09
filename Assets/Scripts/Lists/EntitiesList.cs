@@ -3,64 +3,92 @@ using UnityEngine;
 
 static class EntitiesList
 {
-    public static readonly List<Entity> Entities = new()
+    public static readonly Dictionary<TypesOfEntity, Entity> Entities = new()
     {
-        new Key(
-            0,
-            "Key",
-            "Opens doors",
-            "Pickup",
-            Resources.Load<Sprite>("Sprites/E"),
-            Resources.Load<GameObject>("Prefabs/Key3DObjectPrafab")
-            ),
-        new VideoTape(
-            1,
-            "Video Tape",
-            "Plays video if inserted into TV",
-            "Pickup",
-            Resources.Load<Sprite>("Sprites/E"),
-            Resources.Load<GameObject>("Prefabs/VideoTape")
-            ),
-        new Note(
-            2,
-            "Note",
-            "Can be read",
-            "Pickup",
-            Resources.Load<Sprite>("Sprites/E"),
-            Resources.Load<GameObject>("Prefabs/Note")
-            ),
-        new Painting(
-            3,
-            "Painting",
-            "Work of fart",
-            "Inspect",
-            Resources.Load<GameObject>("Prefabs/Painting")
-            ),
-        new TV(
-            4,
-            "TV",
-            "",
-            "Inspect",
-            null
-            ),
-        new Door(
-            5,
-            "Door",
-            "",
-            "Interact",
-            null
-            ),
-        new SafeNumeric(
-            6,
-            "Safe",
-            "",
-            "Inspect",
-            null
+        {
+            TypesOfEntity.Key, new Key
+            (
+                TypesOfEntity.Key,
+                "Key",
+                "Opens doors",
+                "Pickup",
+                Resources.Load<Sprite>("Sprites/E"),
+                Resources.Load<GameObject>("Prefabs/Key3DObjectPrafab")
             )
+        },
+        {
+            TypesOfEntity.VideoTape, new VideoTape
+            (
+                TypesOfEntity.VideoTape,
+                "Video Tape",
+                "Plays video if inserted into TV",
+                "Pickup",
+                Resources.Load<Sprite>("Sprites/E"),
+                Resources.Load<GameObject>("Prefabs/VideoTape")
+            )
+        },
+        {
+            TypesOfEntity.Note, new Note
+            (
+                TypesOfEntity.Note,
+                "Note",
+                "Can be read",
+                "Pickup",
+                Resources.Load<Sprite>("Sprites/E"),
+                Resources.Load<GameObject>("Prefabs/Note"),
+                "Це все хуйня, це все до сраки -\r\nОці мімози, рози, маки,\r\nОце кохання без їбання,\r\nОце їбання без кохання\r\nЦе все хуйня,\r\nЛиш тільки ти,\r\nЛиш тільки я,\r\nТа ні, і ти хуйня,\r\nЛиш тільки я !\r\n\r\nЦе все хуйня, це все до сраки,\r\nі ті червоні в полі маки,\r\nі та любовь, шо за селом-\r\nце все хуйня! Лишь тільки ти да я!\r\nИ зорі ті,що в небі сяють-\r\nце теж хуйня, це все до сраки!\r\nЛиш тільки ти да я!..\r\nДа і ти-хуйня! Лиш тільки Я!.."
+            )
+        },
+        {
+            TypesOfEntity.Painting, new Painting
+            (
+                TypesOfEntity.Painting,
+                "Painting",
+                "Work of fart",
+                "Inspect",
+                Resources.Load<GameObject>("Prefabs/Painting")
+            )
+        },
+        {
+            TypesOfEntity.TV, new TV
+            (
+                TypesOfEntity.TV,
+                "TV",
+                "",
+                "Inspect",
+                null
+            )
+        },
+        {
+            TypesOfEntity.Door, new Door
+            (
+                TypesOfEntity.Door,
+                "Door",
+                "",
+                "Interact",
+                null
+            )
+        },
+        {
+            TypesOfEntity.SafeNumeric, new SafeNumeric
+            (
+                TypesOfEntity.SafeNumeric,
+                "Safe",
+                "",
+                "Inspect",
+                null
+            )
+        }
     };
+}
 
-    public static int GetID(Entity entity)
-    {
-        return Entities.IndexOf(entity);
-    }
+public enum TypesOfEntity
+{
+    Key,
+    VideoTape,
+    Note,
+    Painting,
+    TV,
+    Door,
+    SafeNumeric
 }

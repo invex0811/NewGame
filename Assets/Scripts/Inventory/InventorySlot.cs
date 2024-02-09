@@ -1,10 +1,10 @@
 [System.Serializable]
 public class InventorySlot
 {
-    public int ItemID { get; private set; }
+    public TypesOfEntity Type { get; private set; }
 
-    public InventorySlot(int ID)
+    public InventorySlot(TypesOfEntity type)
     {
-        ItemID = ID;
+        Type = type;
     }
 }

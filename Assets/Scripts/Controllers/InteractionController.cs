@@ -54,16 +54,16 @@ public class InteractionController : MonoBehaviour
             if (hit.collider == null)
                 return;
 
-            int entityID = hit.collider.GetComponent<EntityID>().ID;
+            TypesOfEntity type = hit.collider.GetComponent<EntityID>().Type;
 
             if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.Interact]))
             {
-                EntitiesList.Entities[entityID].Interact(hit.collider.gameObject);
+                EntitiesList.Entities[type].Interact(hit.collider.gameObject);
 
                 return;
             }
 
-            _hoverText.text = EntitiesList.Entities[entityID].RaycastFeedbackText;
+            _hoverText.text = EntitiesList.Entities[type].RaycastFeedbackText;
         }
     }
 

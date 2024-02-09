@@ -92,10 +92,10 @@ public class InspectionController : MonoBehaviour, IDragHandler
         _inspectionCamera.transform.position = new Vector3(1000, 1000, 995 + _currentZoom);
     }
 
-    public void Initialize(int entityID)
+    public void Initialize(TypesOfEntity type)
     {
         _inspectionPanel.SetActive(true);
-        Entity item = EntitiesList.Entities[entityID];
+        Entity item = EntitiesList.Entities[type];
 
         if (_inspectablePrefab != null)
             Destroy(_inspectablePrefab);
