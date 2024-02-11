@@ -4,6 +4,9 @@ using UnityEngine.EventSystems;
 
 public class SafeHandleController : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    [SerializeField] private float _rotationSpeed;
+    [SerializeField] private float _rotationDuration;
+
     private SafeDoorController _door;
     private float _deltaTime = 0;
 
@@ -35,15 +38,18 @@ public class SafeHandleController : MonoBehaviour, IPointerDownHandler, IPointer
     {
         if (_door.IsLocked)
         {
-            while (_deltaTime < 30)
+            while (_deltaTime < _rotationDuration / 12)
             {
-                gameObject.transform.Rotate(2f, 0, 0);
+                gameObject.transform.Rotate(_rotationSpeed, 0, 0);
                 _deltaTime++;
                 yield return null;
             }
-            while (_deltaTime < 60)
+
+            _deltaTime = 0;
+
+            while (_deltaTime < _rotationDuration / 12)
             {
-                gameObject.transform.Rotate(-2f, 0, 0);
+                gameObject.transform.Rotate(-_rotationSpeed, 0, 0);
                 _deltaTime++;
                 yield return null;
             }
@@ -51,9 +57,9 @@ public class SafeHandleController : MonoBehaviour, IPointerDownHandler, IPointer
 
         if (!_door.IsLocked)
         {
-            while (_deltaTime < 180)
+            while (_deltaTime < _rotationDuration)
             {
-                gameObject.transform.Rotate(2f, 0, 0);
+                gameObject.transform.Rotate(_rotationSpeed, 0, 0);
                 _deltaTime++;
                 yield return null;
             }

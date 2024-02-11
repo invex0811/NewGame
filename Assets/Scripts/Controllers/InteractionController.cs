@@ -86,5 +86,6 @@ public enum InteractionType
 {
     None,
     TV,
-    SafeNumeric
+    SafeNumeric,
+    SafePadlock
 }

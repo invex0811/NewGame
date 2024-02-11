@@ -70,9 +70,19 @@ static class EntitiesList
             )
         },
         {
-            TypesOfEntity.SafeNumeric, new SafeNumeric
+            TypesOfEntity.SafeDigital, new SafeDigital
             (
-                TypesOfEntity.SafeNumeric,
+                TypesOfEntity.SafeDigital,
+                "Safe",
+                "",
+                "Inspect",
+                null
+            )
+        },
+        {
+            TypesOfEntity.SafePadlock, new SafePadlock
+            (
+                TypesOfEntity.SafePadlock,
                 "Safe",
                 "",
                 "Inspect",
@@ -90,5 +100,6 @@ public enum TypesOfEntity
     Painting,
     TV,
     Door,
-    SafeNumeric
+    SafeDigital,
+    SafePadlock,
 }

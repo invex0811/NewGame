@@ -1,6 +1,6 @@
 using UnityEngine;
 
-class SafeNumeric : Entity
+class SafeDigital : Entity
 {
     private readonly TypesOfEntity _type;
     private readonly string _displayName;
@@ -16,7 +16,7 @@ class SafeNumeric : Entity
     public override string RaycastFeedbackText => _raycastFeedbackText;
     public override GameObject Prefab => _prefab;
 
-    public SafeNumeric(TypesOfEntity type, string displayName, string description, string raycastFeedbackText, GameObject prefab)
+    public SafeDigital(TypesOfEntity type, string displayName, string description, string raycastFeedbackText, GameObject prefab)
     {
         _type = type;
         _displayName = displayName;
@@ -31,7 +31,7 @@ class SafeNumeric : Entity
         GameManager.PauseGame();
         GameManager.ChangeTypeOfControll(TypesOfControl.InteractionControl);
 
-        Transform point = InteractionPoints.Instance.SafeNumeric.transform;
+        Transform point = InteractionPoints.Instance.SafeDigital.transform;
         InteractionController.Instance.InteractionPoint = point;
         InteractionController.Instance.CurrentInteraction = InteractionType.SafeNumeric;
         InteractionController.Instance.MoveToInteractionPoint();
