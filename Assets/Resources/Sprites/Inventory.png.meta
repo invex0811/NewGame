@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 61602309de7f0404a8d63af26a59bdaf
+guid: a2ab61a9c9c1f784aac317fc7f7be7e8
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: strap-on-dildo-phallus-penis-doc-johnson-man-438998dbc870bcee9a4e332678413266_0
+      name: Inventory_0
       rect:
         serializedVersion: 2
-        x: 132
-        y: 9
-        width: 333
-        height: 587
+        x: 0
+        y: 0
+        width: 484
+        height: 800
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,8 +111,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c510005ebba62b448a8433c12b52c396
-      internalID: -1983502059
+      spriteID: 985766237054ba94b9f6f6fce19e6fdf
+      internalID: -1969178237
       vertices: []
       indices: 
       edges: []
@@ -120,7 +120,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 3d15ad9ae797fab48b459d5d72fbd91c
+    spriteID: a6671c4fe89db24479cc2b3e9c22f5b4
     internalID: 0
     vertices: []
     indices: 
@@ -128,7 +128,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      strap-on-dildo-phallus-penis-doc-johnson-man-438998dbc870bcee9a4e332678413266_0: -1983502059
+      Inventory_0: -1969178237
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

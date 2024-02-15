@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b35a2f12974d46042b1c07b4e2b20eff
+guid: 67412a53212a302498000ec4a405d1b1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Van_0
+      name: InspectionPanel 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1280
-        height: 720
+        width: 2560
+        height: 1400
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,8 +111,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 87e0b7a87c3920a46a456cfdae8768ac
-      internalID: 408232347
+      spriteID: beafe492fdd92444ca6f68038da304f6
+      internalID: -1145642636
       vertices: []
       indices: 
       edges: []
@@ -120,7 +120,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: f07f335082f0b294eb362f51e2737970
+    spriteID: 765af468bf620384691e724f6d7f6664
     internalID: 0
     vertices: []
     indices: 
@@ -128,7 +128,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Van_0: 408232347
+      InspectionPanel 1_0: -1145642636
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
