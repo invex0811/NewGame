@@ -26,8 +26,8 @@ class Painting : Entity
     public override void Interact(GameObject obj)
     {
         GameManager.ChangeTypeOfControll(TypesOfControl.InspectionControll);
-        InspectionController.Instance.enabled = true;
-        InspectionController.Instance.Initialize(Type);
+        ObjectInspectorController.Instance.enabled = true;
+        ObjectInspectorController.Instance.Initialize(Type);
     }
     public override void StopInteraction()
     {

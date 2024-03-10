@@ -44,7 +44,7 @@ class SafePadlock : Entity
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        _currentObject.GetComponentInChildren<PadlockController>().enabled = true;
+        _currentObject.GetComponentInChildren<Padlock>().enabled = true;
     }
     public override void StopInteraction()
     {

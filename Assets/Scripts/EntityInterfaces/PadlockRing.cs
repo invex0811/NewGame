@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PadlockRingController : MonoBehaviour
+public class PadlockRing : MonoBehaviour
 {
     [SerializeField] private char[] _values;
     [SerializeField] private float _rotationDuration;

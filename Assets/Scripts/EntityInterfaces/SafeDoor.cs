@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class SafeDoorController : MonoBehaviour
+public class SafeDoor : MonoBehaviour
 {
     [SerializeField] private bool _isLocked;
     [SerializeField] private string _password;

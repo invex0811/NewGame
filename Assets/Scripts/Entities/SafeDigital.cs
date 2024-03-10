@@ -44,11 +44,11 @@ class SafeDigital : Entity
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        _currentObject.GetComponentInChildren<SafeDoorController>().enabled = true;
+        _currentObject.GetComponentInChildren<SafeDoor>().enabled = true;
     }
     public override void StopInteraction()
     {
-        _currentObject.GetComponentInChildren<SafeDoorController>().enabled = false;
+        _currentObject.GetComponentInChildren<SafeDoor>().enabled = false;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

@@ -1,20 +1,20 @@
 using System.Collections;
 using UnityEngine;
 
-public class PadlockController : MonoBehaviour
+public class Padlock : MonoBehaviour
 {
     [SerializeField] private GameObject _door;
     [SerializeField] private char[] _password;
 
-    private PadlockRingController[] _rings;
+    private PadlockRing[] _rings;
     private int _currentRingIndex;
     private char[] _currentCombination;
 
     private void OnEnable()
     {
-        _rings = GetComponentsInChildren<PadlockRingController>();
+        _rings = GetComponentsInChildren<PadlockRing>();
         _currentCombination = new char[_rings.Length];
-        foreach (PadlockRingController ring in _rings)
+        foreach (PadlockRing ring in _rings)
         {
             ring.OnValueChange += UpdateCombination;
             ring.enabled = true;
@@ -22,7 +22,7 @@ public class PadlockController : MonoBehaviour
     }
     private void OnDisable()
     {
-        foreach (PadlockRingController ring in _rings)
+        foreach (PadlockRing ring in _rings)
         {
             ring.OnValueChange -= UpdateCombination;
             ring.enabled = false;

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class InspectionController : MonoBehaviour, IDragHandler
+public class ObjectInspectorController : MonoBehaviour, IDragHandler
 {
     [SerializeField] private GameObject _inspectionPanel;
     [SerializeField] private Camera _inspectionCamera;
@@ -15,7 +15,7 @@ public class InspectionController : MonoBehaviour, IDragHandler
     private Quaternion _initialEntityRotation;
     private float _currentZoom;
 
-    public static InspectionController Instance;
+    public static ObjectInspectorController Instance;
 
     private void Awake()
     {

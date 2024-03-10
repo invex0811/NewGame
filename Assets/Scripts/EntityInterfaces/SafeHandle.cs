@@ -7,12 +7,12 @@ public class SafeHandleController : MonoBehaviour, IPointerDownHandler, IPointer
     [SerializeField] private float _rotationSpeed;
     [SerializeField] private float _rotationDuration;
 
-    private SafeDoorController _door;
+    private SafeDoor _door;
     private float _deltaTime = 0;
 
     private void OnEnable()
     {
-        _door = GetComponentInParent<SafeDoorController>();
+        _door = GetComponentInParent<SafeDoor>();
     }
     private void OnDisable()
     {

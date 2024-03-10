@@ -2,13 +2,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DocumentsPanelController : MonoBehaviour
+public class DocumentInspectorController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textUI;
     [SerializeField] private GameObject _documentsPanel;
     [SerializeField] private Button _closeButton;
 
-    public static DocumentsPanelController Instance;
+    public static DocumentInspectorController Instance;
 
     private void Awake()
     {
