@@ -43,6 +43,8 @@ public class InspectionController : MonoBehaviour, IDragHandler
         Cursor.visible = true;
 
         _closeInspectionPanelButton.onClick.AddListener(() => CloseInspectionPanel());
+
+        _currentZoom = 0;
     }
     private void OnDisable()
     {
