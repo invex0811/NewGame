@@ -69,8 +69,10 @@
     <Compile Include="Assets\Scripts\Inventory\Slot.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\SafeButton.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\Lists\AudioLibrary.cs" />
     <Compile Include="Assets\Scripts\Lists\EntitiesList.cs" />
     <Compile Include="Assets\Scripts\Controllers\ObjectInspectorController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\GlobalAudioController.cs" />
     <Compile Include="Assets\Scripts\EntityType.cs" />
     <Compile Include="Assets\Scripts\Items\Key.cs" />
     <Compile Include="Assets\Scripts\Entities\SafeDigital.cs" />

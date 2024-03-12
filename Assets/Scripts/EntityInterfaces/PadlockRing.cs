@@ -37,8 +37,8 @@ public class PadlockRing : MonoBehaviour
 
         if (_currentValue == _values.Length - 1)
             _currentValue = 0;
-
-        _currentValue++;
+        else
+            _currentValue++;
 
         OnValueChange?.Invoke(_ringIndex, _values[_currentValue]);
 
@@ -50,9 +50,9 @@ public class PadlockRing : MonoBehaviour
             return;
 
         if (_currentValue == 0)
-        _currentValue = _values.Length - 1;
-
-        _currentValue--;
+            _currentValue = _values.Length - 1;
+        else
+            _currentValue--;
 
         OnValueChange?.Invoke(_ringIndex, _values[_currentValue]);
 

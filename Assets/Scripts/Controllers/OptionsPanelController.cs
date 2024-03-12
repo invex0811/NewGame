@@ -30,6 +30,11 @@ public class OptionsPanelController : MonoBehaviour
 
     public void OpenPanel(TypesOfEntity type)
     {
+        _useButton.onClick.RemoveAllListeners();
+        _inspectButton.onClick.RemoveAllListeners();
+        _discardButton.onClick.RemoveAllListeners();
+        _cancelButton.onClick.RemoveAllListeners();
+
         if (EntitiesList.Entities[type] is Document)
         {
             _useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Read";
@@ -42,6 +47,7 @@ public class OptionsPanelController : MonoBehaviour
             _useButton.onClick.AddListener(() => Use(type));
             _discardButton.gameObject.SetActive(true);
             _discardButton.onClick.AddListener(() => Discard(type));
+            Debug.Log("1");
         }
         else
         {
@@ -57,6 +63,8 @@ public class OptionsPanelController : MonoBehaviour
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_parentCanvas.transform as RectTransform, mousePosition, _parentCanvas.worldCamera, out Vector2 localMousePosition);
         _optionsPanel.transform.position = _parentCanvas.transform.TransformPoint(localMousePosition);
+
+        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
 
     private void Use(TypesOfEntity type)
@@ -90,6 +98,8 @@ public class OptionsPanelController : MonoBehaviour
         _inspectButton.onClick.RemoveAllListeners();
         _discardButton.onClick.RemoveAllListeners();
         _cancelButton.onClick.RemoveAllListeners();
+
+        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
 
         _optionsPanel.SetActive(false);
     }

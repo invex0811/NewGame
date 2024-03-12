@@ -6,11 +6,14 @@ public class SafeButtonController : MonoBehaviour, IPointerDownHandler, IPointer
     [SerializeField] private Vector3 _targerPosition;
     [SerializeField] private string _value;
     private Vector3 _initialPosition;
+
     public void OnPointerDown(PointerEventData eventData)
     {
         _initialPosition = gameObject.transform.localPosition;
         gameObject.transform.localPosition = _targerPosition;
         OnButtonPressed?.Invoke(_value);
+
+        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], gameObject.GetComponent<AudioSource>());
     }
     public void OnPointerUp(PointerEventData eventData)
     {

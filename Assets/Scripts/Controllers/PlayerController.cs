@@ -4,12 +4,17 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private GameObject _playerBody;
-
+    [SerializeField] private AudioClip[] _stepSounds;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private GameObject _flashlight;
+    
     private CharacterController _controller;
     private float _squatDuration = 0.5f;
     private float _squatDepth = 2f;
     private bool _isCrouchEnabled = true;
     private bool _isCrouch = false;
+    private bool _isFootstepSoundPlaying = false;
+    private int _currentClipIndex;
 
     public static PlayerController Instance;
 
@@ -35,6 +40,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.Crouch]) && _isCrouchEnabled)
             StartCoroutine(Crouch());
 
+        if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.ToogleFlashlight]))
+        {
+            _flashlight.SetActive(!_flashlight.activeSelf);
+            GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], _audioSource);
+        }
+
         MovePlayer();
     }
     private void OnEnable()
@@ -50,6 +61,36 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
 
         _controller.Move(Player.MoveSpeed * Time.deltaTime * moveDirection);
+
+        if (horizontalInput == 1 || horizontalInput == -1 || verticalInput == 1 || verticalInput == -1)
+        {
+            if (_isFootstepSoundPlaying)
+                return;
+
+            StartCoroutine(PlayFootstepSound());
+        }
+    }
+    private IEnumerator PlayFootstepSound()
+    {
+        int clipIndex = Random.Range(0, _stepSounds.Length - 1);
+
+        _isFootstepSoundPlaying = true;
+
+        while(clipIndex == _currentClipIndex)
+        {
+            clipIndex = Random.Range(0, _stepSounds.Length - 1);
+        }
+
+        _currentClipIndex = clipIndex;
+
+        _audioSource.clip = _stepSounds[clipIndex];
+        _audioSource.Play();
+        yield return new WaitForSeconds(_audioSource.clip.length);
+
+        _audioSource.Stop();
+        _isFootstepSoundPlaying = false;
+
+        yield break;
     }
     private IEnumerator Crouch()
     {

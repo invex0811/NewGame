@@ -24,6 +24,8 @@ public class SafeHandleController : MonoBehaviour, IPointerDownHandler, IPointer
         if (_deltaTime != 0)
             return;
         StartCoroutine(RotateHandle());
+
+        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], gameObject.GetComponent<AudioSource>());
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -64,6 +66,8 @@ public class SafeHandleController : MonoBehaviour, IPointerDownHandler, IPointer
                 yield return null;
             }
             OnHandleEndRotation?.Invoke();
+
+            GetComponentInParent<EntityID>().gameObject.layer = 0;
         }
 
         _deltaTime = 0;

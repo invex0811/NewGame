@@ -19,6 +19,9 @@ public class DoorController : MonoBehaviour
         if (_deltaTime != 0)
             return;
 
+        if (!_isOpen)
+            StopAllCoroutines();
+
         StartCoroutine(RotateDoor(90 / _rotatingSpeed));
     }
     public void CloseDoor()
@@ -30,6 +33,7 @@ public class DoorController : MonoBehaviour
     }
     private IEnumerator RotateDoor(float angle)
     {
+        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.DoorOpening], gameObject.GetComponent<AudioSource>());
         while (_deltaTime < _rotatingSpeed)
         {
             gameObject.transform.Rotate(Vector3.up, angle);

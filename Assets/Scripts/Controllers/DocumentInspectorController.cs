@@ -24,6 +24,9 @@ public class DocumentInspectorController : MonoBehaviour
     private void ClosePanel()
     {
         _documentsPanel.SetActive(false);
+
+        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+
         enabled = false;
     }
 
