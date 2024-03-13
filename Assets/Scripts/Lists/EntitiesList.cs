@@ -3,12 +3,12 @@ using UnityEngine;
 
 static class EntitiesList
 {
-    public static readonly Dictionary<TypesOfEntity, Entity> Entities = new()
+    public static readonly Dictionary<EntityType, Entity> Entities = new()
     {
         {
-            TypesOfEntity.Key, new Key
+            EntityType.Key, new Key
             (
-                TypesOfEntity.Key,
+                EntityType.Key,
                 "Key",
                 "Opens doors",
                 "Pickup",
@@ -17,9 +17,9 @@ static class EntitiesList
             )
         },
         {
-            TypesOfEntity.VideoTape, new VideoTape
+            EntityType.VideoTape, new VideoTape
             (
-                TypesOfEntity.VideoTape,
+                EntityType.VideoTape,
                 "Video Tape",
                 "Plays video if inserted into TV",
                 "Pickup",
@@ -28,9 +28,9 @@ static class EntitiesList
             )
         },
         {
-            TypesOfEntity.Note, new Note
+            EntityType.Note, new Note
             (
-                TypesOfEntity.Note,
+                EntityType.Note,
                 "Note",
                 "Can be read",
                 "Pickup",
@@ -39,9 +39,9 @@ static class EntitiesList
             )
         },
         {
-            TypesOfEntity.Painting, new Painting
+            EntityType.Painting, new Painting
             (
-                TypesOfEntity.Painting,
+                EntityType.Painting,
                 "Painting",
                 "Work of fart",
                 "Inspect",
@@ -49,9 +49,9 @@ static class EntitiesList
             )
         },
         {
-            TypesOfEntity.TV, new TV
+            EntityType.TV, new TV
             (
-                TypesOfEntity.TV,
+                EntityType.TV,
                 "TV",
                 "",
                 "Inspect",
@@ -59,9 +59,9 @@ static class EntitiesList
             )
         },
         {
-            TypesOfEntity.Door, new Door
+            EntityType.Door, new Door
             (
-                TypesOfEntity.Door,
+                EntityType.Door,
                 "Door",
                 "",
                 "Interact",
@@ -69,9 +69,9 @@ static class EntitiesList
             )
         },
         {
-            TypesOfEntity.SafeDigital, new SafeDigital
+            EntityType.SafeDigital, new SafeDigital
             (
-                TypesOfEntity.SafeDigital,
+                EntityType.SafeDigital,
                 "Safe",
                 "",
                 "Inspect",
@@ -79,9 +79,9 @@ static class EntitiesList
             )
         },
         {
-            TypesOfEntity.SafePadlock, new SafePadlock
+            EntityType.SafePadlock, new SafePadlock
             (
-                TypesOfEntity.SafePadlock,
+                EntityType.SafePadlock,
                 "Safe",
                 "",
                 "Inspect",
@@ -91,7 +91,7 @@ static class EntitiesList
     };
 }
 
-public enum TypesOfEntity
+public enum EntityType
 {
     Key,
     VideoTape,

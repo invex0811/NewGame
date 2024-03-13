@@ -25,7 +25,7 @@ public class SafeHandleController : MonoBehaviour, IPointerDownHandler, IPointer
             return;
         StartCoroutine(RotateHandle());
 
-        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], gameObject.GetComponent<AudioSource>());
     }
     public void OnPointerEnter(PointerEventData eventData)
     {

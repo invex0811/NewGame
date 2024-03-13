@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class EntityID : MonoBehaviour
 {
-    [SerializeField] private TypesOfEntity _type;
+    [SerializeField] private EntityType _type;
 
-    public TypesOfEntity Type
+    public EntityType Type
     {
         get => _type;
     }

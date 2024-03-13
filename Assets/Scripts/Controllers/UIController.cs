@@ -12,7 +12,7 @@ class UIController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Player.Inventory.Add(EntitiesList.Entities[TypesOfEntity.Key] as Item); // Код для дебага. Добавляет предмет "Key" в инвентарь игрока.
+            Player.Inventory.Add(EntitiesList.Entities[EntityType.Key] as Item); // Код для дебага. Добавляет предмет "Key" в инвентарь игрока.
         }
 
         if (GameManager.TypeOfControl == TypesOfControl.PlayerControl && Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.OpenInventory]))
@@ -36,6 +36,6 @@ class UIController : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], gameObject.GetComponent<AudioSource>());
     }
 }

@@ -54,7 +54,7 @@ public class InteractionController : MonoBehaviour
             if (hit.collider == null)
                 return;
 
-            TypesOfEntity type = hit.collider.GetComponent<EntityID>().Type;
+            EntityType type = hit.collider.GetComponent<EntityID>().Type;
 
             if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.Interact]))
             {

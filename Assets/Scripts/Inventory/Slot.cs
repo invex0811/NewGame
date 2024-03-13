@@ -1,9 +1,9 @@
 [System.Serializable]
 public class Slot
 {
-    public TypesOfEntity Type { get; private set; }
+    public EntityType Type { get; private set; }
 
-    public Slot(TypesOfEntity type)
+    public Slot(EntityType type)
     {
         Type = type;
     }

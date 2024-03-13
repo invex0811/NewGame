@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.ToogleFlashlight]))
         {
             _flashlight.SetActive(!_flashlight.activeSelf);
-            GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], _audioSource);
+            GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], _audioSource);
         }
 
         MovePlayer();

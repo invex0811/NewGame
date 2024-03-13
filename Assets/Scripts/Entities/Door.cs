@@ -2,19 +2,19 @@ using UnityEngine;
 
 class Door : Entity
 {
-    private readonly TypesOfEntity _type;
+    private readonly EntityType _type;
     private readonly string _displayName;
     private readonly string _description;
     private readonly string _raycastFeedbackText;
     private readonly GameObject _prefab;
 
-    public override TypesOfEntity Type => _type;
+    public override EntityType Type => _type;
     public override string DisplayName => _displayName;
     public override string Description => _description;
     public override string RaycastFeedbackText => _raycastFeedbackText;
     public override GameObject Prefab => _prefab;
 
-    public Door(TypesOfEntity type, string displayName, string description, string raycastFeedbackText, GameObject prefab)
+    public Door(EntityType type, string displayName, string description, string raycastFeedbackText, GameObject prefab)
     {
         _type = type;
         _displayName = displayName;

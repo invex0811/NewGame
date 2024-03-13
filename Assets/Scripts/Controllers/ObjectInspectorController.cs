@@ -66,7 +66,7 @@ public class ObjectInspectorController : MonoBehaviour, IDragHandler
             Cursor.visible = false;
         }
 
-        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
 
         enabled = false;
     }
@@ -76,7 +76,7 @@ public class ObjectInspectorController : MonoBehaviour, IDragHandler
         _currentZoom = 0;
         _inspectionCamera.transform.position = new Vector3(1000, 1000, 995 + _currentZoom);
 
-        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
     private void ZoomIn()
     {
@@ -87,7 +87,7 @@ public class ObjectInspectorController : MonoBehaviour, IDragHandler
 
         _inspectionCamera.transform.position = new Vector3(1000, 1000, 995 + _currentZoom);
 
-        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
     private void ZoomOut()
     {
@@ -98,10 +98,10 @@ public class ObjectInspectorController : MonoBehaviour, IDragHandler
 
         _inspectionCamera.transform.position = new Vector3(1000, 1000, 995 + _currentZoom);
 
-        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
 
-    public void Initialize(TypesOfEntity type)
+    public void Initialize(EntityType type)
     {
         _inspectionPanel.SetActive(true);
         Entity item = EntitiesList.Entities[type];

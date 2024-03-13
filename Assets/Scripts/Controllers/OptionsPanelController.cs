@@ -28,7 +28,7 @@ public class OptionsPanelController : MonoBehaviour
         ClosePanel();
     }
 
-    public void OpenPanel(TypesOfEntity type)
+    public void OpenPanel(EntityType type)
     {
         _useButton.onClick.RemoveAllListeners();
         _inspectButton.onClick.RemoveAllListeners();
@@ -64,29 +64,29 @@ public class OptionsPanelController : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_parentCanvas.transform as RectTransform, mousePosition, _parentCanvas.worldCamera, out Vector2 localMousePosition);
         _optionsPanel.transform.position = _parentCanvas.transform.TransformPoint(localMousePosition);
 
-        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
 
-    private void Use(TypesOfEntity type)
+    private void Use(EntityType type)
     {
         Item item = EntitiesList.Entities[type] as Item;
         item.Use();
         ClosePanel();
     }
-    private void Read(TypesOfEntity type)
+    private void Read(EntityType type)
     {
         Document document = EntitiesList.Entities[type] as Document;
         document.Read();
         ClosePanel();
     }
-    private void Inspect(TypesOfEntity type)
+    private void Inspect(EntityType type)
     {
         ObjectInspectorController.Instance.enabled = true;
         ObjectInspectorController.Instance.Initialize(type);
 
         ClosePanel();
     }
-    private void Discard(TypesOfEntity type)
+    private void Discard(EntityType type)
     {
         Item item = EntitiesList.Entities[type] as Item;
         Player.Inventory.Remove(item);
@@ -99,7 +99,7 @@ public class OptionsPanelController : MonoBehaviour
         _discardButton.onClick.RemoveAllListeners();
         _cancelButton.onClick.RemoveAllListeners();
 
-        GlobalAudioController.Instance.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
 
         _optionsPanel.SetActive(false);
     }

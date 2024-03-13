@@ -2,7 +2,7 @@ using UnityEngine;
 
 class SafeDigital : Entity
 {
-    private readonly TypesOfEntity _type;
+    private readonly EntityType _type;
     private readonly string _displayName;
     private readonly string _description;
     private readonly string _raycastFeedbackText;
@@ -10,13 +10,13 @@ class SafeDigital : Entity
 
     private GameObject _currentObject;
 
-    public override TypesOfEntity Type => _type;
+    public override EntityType Type => _type;
     public override string DisplayName => _displayName;
     public override string Description => _description;
     public override string RaycastFeedbackText => _raycastFeedbackText;
     public override GameObject Prefab => _prefab;
 
-    public SafeDigital(TypesOfEntity type, string displayName, string description, string raycastFeedbackText, GameObject prefab)
+    public SafeDigital(EntityType type, string displayName, string description, string raycastFeedbackText, GameObject prefab)
     {
         _type = type;
         _displayName = displayName;
