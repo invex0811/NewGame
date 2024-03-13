@@ -63,10 +63,10 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\EntityInterfaces\SafeHandle.cs" />
     <Compile Include="Assets\Scripts\Controllers\InventoryController.cs" />
-    <Compile Include="Assets\Scripts\Items\Item.cs" />
     <Compile Include="Assets\Scripts\Entities\Entity.cs" />
     <Compile Include="Assets\Scripts\Inventory\Inventory.cs" />
     <Compile Include="Assets\Scripts\Inventory\Slot.cs" />
+    <Compile Include="Assets\Scripts\EntityScriptableObject.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\SafeButton.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Lists\AudioLibrary.cs" />
@@ -74,13 +74,12 @@
     <Compile Include="Assets\Scripts\Lists\EntitiesList.cs" />
     <Compile Include="Assets\Scripts\Controllers\ObjectInspectorController.cs" />
     <Compile Include="Assets\Scripts\EntityType.cs" />
-    <Compile Include="Assets\Scripts\Items\Key.cs" />
-    <Compile Include="Assets\Scripts\Entities\SafeDigital.cs" />
+    <Compile Include="Assets\Scripts\Entities\Document.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\PadlockRing.cs" />
-    <Compile Include="Assets\Scripts\Entities\SafePadlock.cs" />
-    <Compile Include="Assets\Scripts\Entities\Painting.cs" />
     <Compile Include="Assets\Scripts\Controllers\InteractionController.cs" />
+    <Compile Include="Assets\Scripts\DocumentScriptableObject.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Entities\Item.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\DoorController.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\Padlock.cs" />
     <Compile Include="Assets\Scripts\InteractionPoints.cs" />
@@ -91,15 +90,11 @@
     <Compile Include="Assets\Scripts\Controllers\JournalPanelController.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\Items\VideoTape.cs" />
-    <Compile Include="Assets\Scripts\Entities\TV.cs" />
-    <Compile Include="Assets\Scripts\Entities\Door.cs" />
-    <Compile Include="Assets\Scripts\Documents\Document.cs" />
+    <Compile Include="Assets\Scripts\ItemScriptableObject.cs" />
     <Compile Include="Assets\Scripts\Lists\KeyBindsList.cs" />
     <Compile Include="Assets\Scripts\Controllers\OptionsPanelController.cs" />
     <Compile Include="Assets\Scripts\Controllers\UIController.cs" />
     <Compile Include="Assets\Scripts\Inventory\Journal.cs" />
-    <Compile Include="Assets\Scripts\Items\Note.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\TextAssets\Note.txt" />

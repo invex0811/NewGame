@@ -10,14 +10,14 @@ class Inventory
         if (Slots.Count >= 30)
             return;
 
-        Slot newSlot = new(item.Type);
+        Slot newSlot = new(item);
         Slots.Add(newSlot);
 
         OnSlotsChanged?.Invoke();
     }
     public void Remove(Item item)
     {
-        int index = Slots.IndexOf(Slots.Find(s => s.Type == item.Type));
+        int index = Slots.IndexOf(Slots.Find(s => s.Entity == item));
 
         if (Slots[index] != null)
             Slots.Remove(Slots[index]);

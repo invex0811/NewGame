@@ -28,25 +28,25 @@ public class OptionsPanelController : MonoBehaviour
         ClosePanel();
     }
 
-    public void OpenPanel(EntityType type)
+    public void OpenPanel(Entity entity)
     {
         _useButton.onClick.RemoveAllListeners();
         _inspectButton.onClick.RemoveAllListeners();
         _discardButton.onClick.RemoveAllListeners();
         _cancelButton.onClick.RemoveAllListeners();
 
-        if (EntitiesList.Entities[type] is Document)
+        if (entity is Document)
         {
             _useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Read";
-            _useButton.onClick.AddListener(() => Read(type));
+            _useButton.onClick.AddListener(() => Read(entity));
             _discardButton.gameObject.SetActive(false);
         }
-        else if (EntitiesList.Entities[type] is Item)
+        else if (entity is Item)
         {
             _useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Use";
-            _useButton.onClick.AddListener(() => Use(type));
+            _useButton.onClick.AddListener(() => Use(entity));
             _discardButton.gameObject.SetActive(true);
-            _discardButton.onClick.AddListener(() => Discard(type));
+            _discardButton.onClick.AddListener(() => Discard(entity));
             Debug.Log("1");
         }
         else
@@ -54,7 +54,7 @@ public class OptionsPanelController : MonoBehaviour
             throw new Exception("Invalid type of entity");
         }
 
-        _inspectButton.onClick.AddListener(() => Inspect(type));
+        _inspectButton.onClick.AddListener(() => Inspect(entity));
         _cancelButton.onClick.AddListener(() => ClosePanel());
 
         _optionsPanel.SetActive(true);
@@ -67,28 +67,28 @@ public class OptionsPanelController : MonoBehaviour
         GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
 
-    private void Use(EntityType type)
+    private void Use(Entity entity)
     {
-        Item item = EntitiesList.Entities[type] as Item;
+        Item item = entity as Item;
         item.Use();
         ClosePanel();
     }
-    private void Read(EntityType type)
+    private void Read(Entity entity)
     {
-        Document document = EntitiesList.Entities[type] as Document;
+        Document document = entity as Document;
         document.Read();
         ClosePanel();
     }
-    private void Inspect(EntityType type)
+    private void Inspect(Entity entity)
     {
         ObjectInspectorController.Instance.enabled = true;
-        ObjectInspectorController.Instance.Initialize(type);
+        ObjectInspectorController.Instance.Initialize(entity);
 
         ClosePanel();
     }
-    private void Discard(EntityType type)
+    private void Discard(Entity entity)
     {
-        Item item = EntitiesList.Entities[type] as Item;
+        Item item = entity as Item;
         Player.Inventory.Remove(item);
         ClosePanel();
     }

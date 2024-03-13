@@ -1,10 +1,10 @@
 [System.Serializable]
 public class Slot
 {
-    public EntityType Type { get; private set; }
+    public Entity Entity { get; private set; }
 
-    public Slot(EntityType type)
+    public Slot(Entity entity)
     {
-        Type = type;
+        Entity = entity;
     }
 }

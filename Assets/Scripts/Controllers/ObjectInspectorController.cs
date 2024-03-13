@@ -101,23 +101,22 @@ public class ObjectInspectorController : MonoBehaviour, IDragHandler
         GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
 
-    public void Initialize(EntityType type)
+    public void Initialize(Entity entity)
     {
         _inspectionPanel.SetActive(true);
-        Entity item = EntitiesList.Entities[type];
 
         if (_inspectablePrefab != null)
             Destroy(_inspectablePrefab);
 
-        _inspectablePrefab = Instantiate(item.Prefab, new Vector3(1000, 1000, 1000), new Quaternion(0, 180, 0, 0));
+        _inspectablePrefab = Instantiate(entity.ScriptableObject.Prefab, new Vector3(1000, 1000, 1000), new Quaternion(0, 180, 0, 0));
         _initialEntityRotation = _inspectablePrefab.transform.rotation;
 
         _inspectionCamera.enabled = true;
         _inspectionCamera.transform.position = new Vector3(1000, 1000, 995);
         _inspectionCamera.transform.eulerAngles = new Vector3(0, 0, 0);
 
-        _objectName.text = item.DisplayName;
-        _objectDescription.text = item.Description;
+        _objectName.text = entity.ScriptableObject.DisplayName;
+        _objectDescription.text = entity.ScriptableObject.Description;
     }
     public void OnDrag(PointerEventData eventData)
     {

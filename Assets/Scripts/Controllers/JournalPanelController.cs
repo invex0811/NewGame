@@ -37,10 +37,10 @@ public class JournalPanelController : MonoBehaviour
 
         foreach (Slot slot in Player.Journal.Slots)
         {
-            Document document = EntitiesList.Entities[slot.Type] as Document;
+            Document document = slot.Entity as Document;
             GameObject documentSlot = Instantiate(Resources.Load<GameObject>("Prefabs/Document"), _documentContainer, false);
-            documentSlot.transform.Find("DocumentName").GetComponent<TextMeshProUGUI>().text = document.DisplayName;
-            documentSlot.GetComponent<Button>().onClick.AddListener(() => OptionsPanelController.Instance.OpenPanel(slot.Type));
+            documentSlot.transform.Find("DocumentName").GetComponent<TextMeshProUGUI>().text = document.ScriptableObject.DisplayName;
+            documentSlot.GetComponent<Button>().onClick.AddListener(() => OptionsPanelController.Instance.OpenPanel(slot.Entity));
         }
     }
 

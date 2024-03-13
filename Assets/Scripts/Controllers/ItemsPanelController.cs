@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,11 +38,11 @@ public class ItemsPanelController : MonoBehaviour
 
         foreach (Slot slot in Player.Inventory.Slots)
         {
-            Item item = EntitiesList.Entities[slot.Type] as Item;
+            Item item = slot.Entity as Item;
             GameObject itemSlot = Instantiate(Resources.Load<GameObject>("Prefabs/ItemSlot"), _itemContainer, false);
-            itemSlot.transform.Find("ItemIcon").GetComponent<Image>().sprite = item.Sprite;
-            itemSlot.transform.Find("ItemName").GetComponent<TextMeshProUGUI>().text = item.DisplayName;
-            itemSlot.GetComponent<Button>().onClick.AddListener(() => OptionsPanelController.Instance.OpenPanel(slot.Type));
+            itemSlot.transform.Find("ItemIcon").GetComponent<Image>().sprite = item.ScriptableObject.Sprite;
+            itemSlot.transform.Find("ItemName").GetComponent<TextMeshProUGUI>().text = item.ScriptableObject.DisplayName;
+            itemSlot.GetComponent<Button>().onClick.AddListener(() => OptionsPanelController.Instance.OpenPanel(slot.Entity));
         }
     }
     private void ClosePanel()
