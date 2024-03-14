@@ -33,7 +33,7 @@ public class DoorController : MonoBehaviour
     }
     private IEnumerator RotateDoor(float angle)
     {
-        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.DoorOpening], gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.DoorOpening), gameObject.GetComponent<AudioSource>());
         while (_deltaTime < _rotatingSpeed)
         {
             gameObject.transform.Rotate(Vector3.up, angle);

@@ -606,7 +606,8 @@ AnimationClip:
   - time: 2.5
     functionName: OpenDoor
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11500000, guid: 525c52fe947e32546b23d02b4c41751d,
+      type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

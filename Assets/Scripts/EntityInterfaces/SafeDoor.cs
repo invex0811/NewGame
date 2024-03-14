@@ -25,13 +25,13 @@ public class SafeDoor : MonoBehaviour
             button.OnButtonPressed += ComparePassword;
         }
         GetComponentInChildren<SafeHandleController>().enabled = true;
-        GetComponentInChildren<SafeHandleController>().OnHandleEndRotation += OpenDoor;
+        GetComponentInChildren<SafeHandleController>().OnHandleEndRotation += UpdateState;
 
         _enteredCombination = "";
     }
     private void OnDisable()
     {
-        GetComponentInChildren<SafeHandleController>().OnHandleEndRotation -= OpenDoor;
+        GetComponentInChildren<SafeHandleController>().OnHandleEndRotation -= UpdateState;
         GetComponentInChildren<SafeHandleController>().enabled = false;
         foreach (SafeButtonController button in _buttons)
         {
@@ -56,6 +56,16 @@ public class SafeDoor : MonoBehaviour
             _isLocked = false;
             return;
         }
+    }
+    private void UpdateState()
+    {
+        if (_isLocked)
+        {
+            _enteredCombination = "";
+            return;
+        }
+
+        OpenDoor();
     }
     private void OpenDoor()
     {

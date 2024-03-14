@@ -2,40 +2,15 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    [SerializeField] private EntityScriptableObject _scriptableObject;
-    public EntityScriptableObject ScriptableObject
-    {
-        get { return _scriptableObject; }
-    }
+    [SerializeField] private EntityScriptableObject _entityScriptableObject;
+    public EntityScriptableObject EntityScriptableObject => _entityScriptableObject;
 
-    public void Interact()
+    public virtual void Interact()
     {
         Transform interactionPoint;
 
-        switch (_scriptableObject.Type)
+        switch (EntityScriptableObject.Type)
         {
-            case EntityType.Key:
-                Player.Inventory.Add(this as Item);
-                Destroy(gameObject);
-
-                break;
-            case EntityType.VideoTape:
-                Player.Inventory.Add(this as Item);
-                Destroy(gameObject);
-
-                break;
-            case EntityType.Note:
-                Player.Journal.Add(this as Document);
-
-                Destroy(gameObject);
-
-                break;
-            case EntityType.Painting:
-                GameManager.ChangeTypeOfControll(TypesOfControl.InspectionControll);
-                ObjectInspectorController.Instance.enabled = true;
-                ObjectInspectorController.Instance.Initialize(this);
-
-                break;
             case EntityType.TV:
                 GameManager.PauseGame();
 
@@ -100,21 +75,17 @@ public class Entity : MonoBehaviour
 
                 break;
             default:
+                GameManager.ChangeTypeOfControll(TypesOfControl.InspectionControll);
+                ObjectInspectorController.Instance.enabled = true;
+                ObjectInspectorController.Instance.Initialize(this);
+
                 break;
         }
     }
     public void StopInteraction()
     {
-        switch (_scriptableObject.Type)
+        switch (EntityScriptableObject.Type)
         {
-            case EntityType.Key:
-                break;
-            case EntityType.VideoTape:
-                break;
-            case EntityType.Note:
-                break;
-            case EntityType.Painting:
-                break;
             case EntityType.TV:
                 InteractionController.Instance.OnStopInteraction -= StopInteraction;
 
@@ -124,11 +95,7 @@ public class Entity : MonoBehaviour
                 GameManager.ResumeGame();
 
                 break;
-            case EntityType.Door:
-                break;
             case EntityType.SafeDigital:
-                gameObject.GetComponentInChildren<SafeDoor>().enabled = false;
-
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
 
@@ -164,4 +131,16 @@ public class Entity : MonoBehaviour
                 break;
         }
     }
+}
+
+public enum EntityType
+{
+    Key,
+    VideoTape,
+    Note,
+    Painting,
+    TV,
+    Door,
+    SafeDigital,
+    SafePadlock,
 }

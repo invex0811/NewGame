@@ -9,12 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbe27219618c58c4fb05d91ac2a5efda, type: 3}
-  m_Name: Note
+  m_Script: {fileID: 11500000, guid: f7e95b68f72450f449f2f3d8e299d183, type: 3}
+  m_Name: VideoTape
   m_EditorClassIdentifier: 
-  _type: 2
-  _displayName: Note
-  _description: "\u0445\u0443\u0438\u043F\u0448\u0438\u043D"
+  _type: 1
+  _description: Plays video if inserted into TV
   _raycastFeedbackText: Pickup
-  _prefab: {fileID: 919132149155446097, guid: 6d538a506fd824f4ba3b94740858c7e3, type: 3}
-  _text: Padlock - rqt \r\n Password - 1234
+  _sprite: {fileID: -1028319499, guid: 0369522267200ee4f876f1cda53a96c1, type: 3}

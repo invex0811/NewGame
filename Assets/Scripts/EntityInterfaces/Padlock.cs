@@ -77,17 +77,19 @@ public class Padlock : MonoBehaviour
             password += item;
 
         if (currentCombination == password)
-        {
+        { 
             gameObject.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
             gameObject.GetComponent<Animator>().Play("PadlockOpening");
         }
     }
     private IEnumerator OpenDoor()
     {
+        GetComponentInParent<Entity>().gameObject.layer = 0;
+
         int _deltaTime = 0;
-        while(_deltaTime < 360)
+        while (_deltaTime < 180)
         {
-            _door.transform.Rotate(Vector3.forward, 0.25f);
+            _door.transform.Rotate(Vector3.forward, 0.50f);
             _deltaTime++;
             yield return null;
         }

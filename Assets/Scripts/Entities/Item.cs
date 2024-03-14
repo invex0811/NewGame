@@ -2,23 +2,24 @@ using UnityEngine;
 
 public class Item : Entity
 {
-    [SerializeField] private ItemScriptableObject _scriptableObject;
+    [SerializeField] private ItemScriptableObject _itemScriptableObject;
+    public ItemScriptableObject ItemScriptableObject => _itemScriptableObject;
 
-    public new ItemScriptableObject ScriptableObject
+    public Item (ItemScriptableObject scriptableObject)
     {
-        get { return _scriptableObject; }
+        _itemScriptableObject = scriptableObject;
     }
 
     public void Use()
     {
-        switch (_scriptableObject.Type)
+        switch (_itemScriptableObject.Type)
         {
-            case EntityType.Key:
+            case ItemType.Key:
                 Player.Inventory.Remove(this);
                 Debug.Log("Key used.");
 
                 break;
-            case EntityType.VideoTape:
+            case ItemType.VideoTape:
                 if (InteractionController.Instance.CurrentInteraction != InteractionType.TV)
                     return;
 
@@ -26,20 +27,37 @@ public class Item : Entity
                 Debug.Log("Tape inserted.");
 
                 break;
-            case EntityType.Note:
-                break;
-            case EntityType.Painting:
-                break;
-            case EntityType.TV:
-                break;
-            case EntityType.Door:
-                break;
-            case EntityType.SafeDigital:
-                break;
-            case EntityType.SafePadlock:
-                break;
             default:
+                Player.Inventory.Remove(this);
+                Debug.Log($"{EntityScriptableObject.Name} used");
+
                 break;
         }
     }
+    public override void Interact()
+    {
+        switch (EntityScriptableObject.Type)
+        {
+            case EntityType.Key:
+                Player.Inventory.Add(this);
+                Destroy(gameObject);
+
+                break;
+            case EntityType.VideoTape:
+                Player.Inventory.Add(this);
+                Destroy(gameObject);
+
+                break;
+            default:
+                Destroy(gameObject);
+
+                break;
+        }
+    }
+}
+
+public enum ItemType
+{
+    Key,
+    VideoTape
 }

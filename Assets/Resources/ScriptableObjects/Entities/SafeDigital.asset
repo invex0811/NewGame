@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5245bbd386a60745ab8daeeb0ffd291, type: 3}
-  m_Name: TV
+  m_Script: {fileID: 11500000, guid: 547b35623a2a0ce45834f1d0d96e7b50, type: 3}
+  m_Name: SafeDigital
   m_EditorClassIdentifier: 
-  _type: 4
-  _displayName: TV
-  _description: TV
-  _raycastFeedbackText: Interact
-  _prefab: {fileID: 1616960743452837014, guid: e32f8bc3656bd01409e6386fb162d725, type: 3}
+  _type: 6
+  _name: Digital Safe
+  _raycastFeedbackText: Inspect
+  _prefab: {fileID: 5780431319793936479, guid: f83944508f0bd724a8b74ff1fcff721e, type: 3}

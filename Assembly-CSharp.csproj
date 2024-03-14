@@ -62,18 +62,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\EntityInterfaces\SafeHandle.cs" />
+    <Compile Include="Assets\Scripts\Inventory\InventorySlot.cs" />
     <Compile Include="Assets\Scripts\Controllers\InventoryController.cs" />
     <Compile Include="Assets\Scripts\Entities\Entity.cs" />
     <Compile Include="Assets\Scripts\Inventory\Inventory.cs" />
-    <Compile Include="Assets\Scripts\Inventory\Slot.cs" />
+    <Compile Include="Assets\Scripts\Lists\AudioProvider.cs" />
+    <Compile Include="Assets\Scripts\Inventory\JournalSlot .cs" />
     <Compile Include="Assets\Scripts\EntityScriptableObject.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\SafeButton.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
-    <Compile Include="Assets\Scripts\Lists\AudioLibrary.cs" />
     <Compile Include="Assets\Scripts\Services\GlobalAudioService.cs" />
     <Compile Include="Assets\Scripts\Lists\EntitiesList.cs" />
     <Compile Include="Assets\Scripts\Controllers\ObjectInspectorController.cs" />
-    <Compile Include="Assets\Scripts\EntityType.cs" />
     <Compile Include="Assets\Scripts\Entities\Document.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\PadlockRing.cs" />
     <Compile Include="Assets\Scripts\Controllers\InteractionController.cs" />

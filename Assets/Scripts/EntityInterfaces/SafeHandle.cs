@@ -25,7 +25,7 @@ public class SafeHandleController : MonoBehaviour, IPointerDownHandler, IPointer
             return;
         StartCoroutine(RotateHandle());
 
-        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.ButtonClick), gameObject.GetComponent<AudioSource>());
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -55,6 +55,8 @@ public class SafeHandleController : MonoBehaviour, IPointerDownHandler, IPointer
                 _deltaTime++;
                 yield return null;
             }
+
+            OnHandleEndRotation?.Invoke();
         }
 
         if (!_door.IsLocked)
@@ -67,7 +69,7 @@ public class SafeHandleController : MonoBehaviour, IPointerDownHandler, IPointer
             }
             OnHandleEndRotation?.Invoke();
 
-            GetComponentInParent<EntityID>().gameObject.layer = 0;
+            GetComponentInParent<Entity>().gameObject.layer = 0;
         }
 
         _deltaTime = 0;

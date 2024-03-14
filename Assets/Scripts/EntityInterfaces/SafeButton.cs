@@ -13,7 +13,7 @@ public class SafeButtonController : MonoBehaviour, IPointerDownHandler, IPointer
         gameObject.transform.localPosition = _targerPosition;
         OnButtonPressed?.Invoke(_value);
 
-        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.ButtonClick), gameObject.GetComponent<AudioSource>());
     }
     public void OnPointerUp(PointerEventData eventData)
     {

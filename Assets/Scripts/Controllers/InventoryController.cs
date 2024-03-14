@@ -58,13 +58,13 @@ public class InventoryController : MonoBehaviour
     {
         OnPanelChange?.Invoke();
         ItemsPanelController.Instance.enabled = true;
-        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.ButtonClick), UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
     private void OpenDocumentsPanel()
     {
         OnPanelChange?.Invoke();
         JournalPanelController.Instance.enabled = true;
-        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.ButtonClick), UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
 
     public event Action OnPanelChange;

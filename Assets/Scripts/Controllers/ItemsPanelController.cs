@@ -36,13 +36,13 @@ public class ItemsPanelController : MonoBehaviour
             Destroy(itemSlot.gameObject);
         }
 
-        foreach (Slot slot in Player.Inventory.Slots)
+        foreach (InventorySlot slot in Player.Inventory.Slots)
         {
-            Item item = slot.Entity as Item;
+            Item item = slot.Item;
             GameObject itemSlot = Instantiate(Resources.Load<GameObject>("Prefabs/ItemSlot"), _itemContainer, false);
-            itemSlot.transform.Find("ItemIcon").GetComponent<Image>().sprite = item.ScriptableObject.Sprite;
-            itemSlot.transform.Find("ItemName").GetComponent<TextMeshProUGUI>().text = item.ScriptableObject.DisplayName;
-            itemSlot.GetComponent<Button>().onClick.AddListener(() => OptionsPanelController.Instance.OpenPanel(slot.Entity));
+            itemSlot.transform.Find("ItemIcon").GetComponent<Image>().sprite = item.ItemScriptableObject.Sprite;
+            itemSlot.transform.Find("ItemName").GetComponent<TextMeshProUGUI>().text = item.EntityScriptableObject.Name;
+            itemSlot.GetComponent<Button>().onClick.AddListener(() => OptionsPanelController.Instance.OpenPanel(item));
         }
     }
     private void ClosePanel()

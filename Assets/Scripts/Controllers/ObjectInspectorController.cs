@@ -8,10 +8,10 @@ public class ObjectInspectorController : MonoBehaviour, IDragHandler
     [SerializeField] private GameObject _inspectionPanel;
     [SerializeField] private Camera _inspectionCamera;
     [SerializeField] private Button _closeInspectionPanelButton;
-    [SerializeField] private TextMeshProUGUI _objectName;
-    [SerializeField] private TextMeshProUGUI _objectDescription;
+    [SerializeField] private TextMeshProUGUI _entityName;
+    [SerializeField] private TextMeshProUGUI _entityDescription;
 
-    private GameObject _inspectablePrefab;
+    private GameObject _entityPrefab;
     private Quaternion _initialEntityRotation;
     private float _currentZoom;
 
@@ -66,17 +66,17 @@ public class ObjectInspectorController : MonoBehaviour, IDragHandler
             Cursor.visible = false;
         }
 
-        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.ButtonClick), UIController.Instance.gameObject.GetComponent<AudioSource>());
 
         enabled = false;
     }
     private void ResetPanel()
     {
-        _inspectablePrefab.transform.rotation = _initialEntityRotation;
+        _entityPrefab.transform.rotation = _initialEntityRotation;
         _currentZoom = 0;
         _inspectionCamera.transform.position = new Vector3(1000, 1000, 995 + _currentZoom);
 
-        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.ButtonClick), UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
     private void ZoomIn()
     {
@@ -87,7 +87,7 @@ public class ObjectInspectorController : MonoBehaviour, IDragHandler
 
         _inspectionCamera.transform.position = new Vector3(1000, 1000, 995 + _currentZoom);
 
-        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.ButtonClick), UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
     private void ZoomOut()
     {
@@ -98,32 +98,34 @@ public class ObjectInspectorController : MonoBehaviour, IDragHandler
 
         _inspectionCamera.transform.position = new Vector3(1000, 1000, 995 + _currentZoom);
 
-        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.ButtonClick), UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
 
     public void Initialize(Entity entity)
     {
         _inspectionPanel.SetActive(true);
 
-        if (_inspectablePrefab != null)
-            Destroy(_inspectablePrefab);
+        if (_entityPrefab != null)
+            Destroy(_entityPrefab);
 
-        _inspectablePrefab = Instantiate(entity.ScriptableObject.Prefab, new Vector3(1000, 1000, 1000), new Quaternion(0, 180, 0, 0));
-        _initialEntityRotation = _inspectablePrefab.transform.rotation;
+        _entityPrefab = Instantiate(entity.EntityScriptableObject.Prefab, new Vector3(1000, 1000, 1000), new Quaternion(0, 180, 0, 0));
+        _initialEntityRotation = _entityPrefab.transform.rotation;
 
         _inspectionCamera.enabled = true;
         _inspectionCamera.transform.position = new Vector3(1000, 1000, 995);
         _inspectionCamera.transform.eulerAngles = new Vector3(0, 0, 0);
 
-        _objectName.text = entity.ScriptableObject.DisplayName;
-        _objectDescription.text = entity.ScriptableObject.Description;
+        //_entityName.text = entity.EntityScriptableObject.Name;
+
+        //if (entity is Item item)
+        //    _entityDescription.text = item.ItemScriptableObject.Description;
     }
     public void OnDrag(PointerEventData eventData)
     {
-        if (_inspectablePrefab != null)
+        if (_entityPrefab != null)
         {
-            _inspectablePrefab.transform.Rotate(Vector3.left, eventData.delta.y / 3);
-            _inspectablePrefab.transform.Rotate(Vector3.down, eventData.delta.x / 3);
+            _entityPrefab.transform.Rotate(Vector3.left, eventData.delta.y / 3);
+            _entityPrefab.transform.Rotate(Vector3.down, eventData.delta.x / 3);
         }
     }
 }

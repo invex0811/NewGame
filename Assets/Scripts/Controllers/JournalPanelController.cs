@@ -35,12 +35,12 @@ public class JournalPanelController : MonoBehaviour
             Destroy(document.gameObject);
         }
 
-        foreach (Slot slot in Player.Journal.Slots)
+        foreach (JournalSlot slot in Player.Journal.Slots)
         {
-            Document document = slot.Entity as Document;
+            Document document = slot.Document;
             GameObject documentSlot = Instantiate(Resources.Load<GameObject>("Prefabs/Document"), _documentContainer, false);
-            documentSlot.transform.Find("DocumentName").GetComponent<TextMeshProUGUI>().text = document.ScriptableObject.DisplayName;
-            documentSlot.GetComponent<Button>().onClick.AddListener(() => OptionsPanelController.Instance.OpenPanel(slot.Entity));
+            documentSlot.transform.Find("DocumentName").GetComponent<TextMeshProUGUI>().text = document.EntityScriptableObject.Name;
+            documentSlot.GetComponent<Button>().onClick.AddListener(() => OptionsPanelController.Instance.OpenPanel(document));
         }
     }
 

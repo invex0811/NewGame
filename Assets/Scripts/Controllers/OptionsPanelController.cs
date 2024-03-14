@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class OptionsPanelController : MonoBehaviour
 {
@@ -28,33 +29,20 @@ public class OptionsPanelController : MonoBehaviour
         ClosePanel();
     }
 
-    public void OpenPanel(Entity entity)
+    public void OpenPanel(Item item)
     {
         _useButton.onClick.RemoveAllListeners();
         _inspectButton.onClick.RemoveAllListeners();
         _discardButton.onClick.RemoveAllListeners();
         _cancelButton.onClick.RemoveAllListeners();
 
-        if (entity is Document)
-        {
-            _useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Read";
-            _useButton.onClick.AddListener(() => Read(entity));
-            _discardButton.gameObject.SetActive(false);
-        }
-        else if (entity is Item)
-        {
-            _useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Use";
-            _useButton.onClick.AddListener(() => Use(entity));
-            _discardButton.gameObject.SetActive(true);
-            _discardButton.onClick.AddListener(() => Discard(entity));
-            Debug.Log("1");
-        }
-        else
-        {
-            throw new Exception("Invalid type of entity");
-        }
+        _useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Use";
 
-        _inspectButton.onClick.AddListener(() => Inspect(entity));
+        _discardButton.gameObject.SetActive(true);
+
+        _useButton.onClick.AddListener(() => Use(item));
+        _discardButton.onClick.AddListener(() => Discard(item));
+        _inspectButton.onClick.AddListener(() => Inspect(item));
         _cancelButton.onClick.AddListener(() => ClosePanel());
 
         _optionsPanel.SetActive(true);
@@ -64,18 +52,40 @@ public class OptionsPanelController : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_parentCanvas.transform as RectTransform, mousePosition, _parentCanvas.worldCamera, out Vector2 localMousePosition);
         _optionsPanel.transform.position = _parentCanvas.transform.TransformPoint(localMousePosition);
 
-        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.ButtonClick), UIController.Instance.gameObject.GetComponent<AudioSource>());
+    }
+    public void OpenPanel(Document document)
+    {
+        _useButton.onClick.RemoveAllListeners();
+        _inspectButton.onClick.RemoveAllListeners();
+        _discardButton.onClick.RemoveAllListeners();
+        _cancelButton.onClick.RemoveAllListeners();
+
+        _useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Read";
+
+        _discardButton.gameObject.SetActive(false);
+
+        _useButton.onClick.AddListener(() => Read(document));
+        _inspectButton.onClick.AddListener(() => Inspect(document));
+        _cancelButton.onClick.AddListener(() => ClosePanel());
+
+        _optionsPanel.SetActive(true);
+
+        Vector3 mousePosition = Input.mousePosition;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_parentCanvas.transform as RectTransform, mousePosition, _parentCanvas.worldCamera, out Vector2 localMousePosition);
+        _optionsPanel.transform.position = _parentCanvas.transform.TransformPoint(localMousePosition);
+
+        GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.ButtonClick), UIController.Instance.gameObject.GetComponent<AudioSource>());
     }
 
-    private void Use(Entity entity)
+    private void Use(Item item)
     {
-        Item item = entity as Item;
         item.Use();
         ClosePanel();
     }
-    private void Read(Entity entity)
+    private void Read(Document document)
     {
-        Document document = entity as Document;
         document.Read();
         ClosePanel();
     }
@@ -86,9 +96,8 @@ public class OptionsPanelController : MonoBehaviour
 
         ClosePanel();
     }
-    private void Discard(Entity entity)
+    private void Discard(Item item)
     {
-        Item item = entity as Item;
         Player.Inventory.Remove(item);
         ClosePanel();
     }
@@ -99,7 +108,7 @@ public class OptionsPanelController : MonoBehaviour
         _discardButton.onClick.RemoveAllListeners();
         _cancelButton.onClick.RemoveAllListeners();
 
-        GlobalAudioService.PlayAudio(AudioLibrary.Sounds[Sound.ButtonClick], UIController.Instance.gameObject.GetComponent<AudioSource>());
+        GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.ButtonClick), UIController.Instance.gameObject.GetComponent<AudioSource>());
 
         _optionsPanel.SetActive(false);
     }

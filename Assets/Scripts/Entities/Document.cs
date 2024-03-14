@@ -2,35 +2,38 @@ using UnityEngine;
 
 public class Document : Entity
 {
-    [SerializeField] private DocumentScriptableObject _scriptableObject;
-
-    public new DocumentScriptableObject ScriptableObject => _scriptableObject;
+    [SerializeField] private DocumentScriptableObject _documentScriptableObject;
+    public DocumentScriptableObject DocumentScriptableObject => _documentScriptableObject;
 
     public void Read()
     {
-        switch (_scriptableObject.Type)
+        switch (_documentScriptableObject.Type)
         {
-            case EntityType.Key:
-                break;
-            case EntityType.VideoTape:
-                break;
-            case EntityType.Note:
+            case DocumentType.Note:
                 DocumentInspectorController.Instance.enabled = true;
-                DocumentInspectorController.Instance.Initialize(_scriptableObject.Text);
+                DocumentInspectorController.Instance.Initialize(_documentScriptableObject.Text);
 
-                break;
-            case EntityType.Painting:
-                break;
-            case EntityType.TV:
-                break;
-            case EntityType.Door:
-                break;
-            case EntityType.SafeDigital:
-                break;
-            case EntityType.SafePadlock:
-                break;
-            default:
                 break;
         }
     }
+    public override void Interact()
+    {
+        switch (EntityScriptableObject.Type)
+        {
+            case EntityType.Note:
+                Player.Journal.Add(this);
+                Destroy(gameObject);
+
+                break;
+            default:
+                Destroy(gameObject);
+
+                break;
+        }
+    }
+}
+
+public enum DocumentType
+{
+    Note
 }

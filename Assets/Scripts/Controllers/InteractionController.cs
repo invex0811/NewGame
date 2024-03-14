@@ -59,11 +59,21 @@ public class InteractionController : MonoBehaviour
             if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.Interact]))
             {
                 entity.Interact();
-
                 return;
             }
 
-            _hoverText.text = entity.ScriptableObject.RaycastFeedbackText;
+            if (entity is Item item)
+            {
+                _hoverText.text = item.ItemScriptableObject.RaycastFeedbackText;
+                return;
+            }
+            if (entity is Document document)
+            {
+                _hoverText.text = document.DocumentScriptableObject.RaycastFeedbackText;
+                return;
+            }
+
+            _hoverText.text = entity.EntityScriptableObject.RaycastFeedbackText;
         }
     }
 
