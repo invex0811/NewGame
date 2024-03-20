@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private GameObject _playerBody;
     [SerializeField] private AudioClip[] _stepSounds;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private GameObject _flashlight;
@@ -70,6 +69,19 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(PlayFootstepSound());
         }
     }
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Rigidbody body = hit.collider.attachedRigidbody;
+
+        if (body == null || body.isKinematic)
+            return;
+
+        if (hit.moveDirection.y < -0.3)
+            return;
+
+        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+        body.velocity = pushDir * 15;
+    }
     private IEnumerator PlayFootstepSound()
     {
         int clipIndex = Random.Range(0, _stepSounds.Length - 1);
@@ -97,7 +109,7 @@ public class PlayerController : MonoBehaviour
         _isCrouchEnabled = false;
 
         float elapsedTime = 0f;
-        float targetScale = _playerBody.transform.localScale.y;
+        float targetScale = transform.localScale.y;
         if (!_isCrouch)
             targetScale -= _squatDepth;
         if (_isCrouch)
@@ -105,13 +117,13 @@ public class PlayerController : MonoBehaviour
 
         while (elapsedTime < _squatDuration)
         {
-            _playerBody.transform.localScale = Vector3.Lerp(_playerBody.transform.localScale, new Vector3(_playerBody.transform.localScale.x, targetScale, _playerBody.transform.localScale.z), elapsedTime);
+            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(transform.localScale.x, targetScale, transform.localScale.z), elapsedTime);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        _playerBody.transform.localScale = new Vector3(_playerBody.transform.localScale.x, targetScale, _playerBody.transform.localScale.z);
+        transform.localScale = new Vector3(transform.localScale.x, targetScale, transform.localScale.z);
 
         _isCrouch = !_isCrouch;
         _isCrouchEnabled = true;
