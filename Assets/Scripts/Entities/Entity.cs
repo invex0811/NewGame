@@ -1,10 +1,15 @@
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class Entity : MonoBehaviour
 {
     [SerializeField] private EntityScriptableObject _entityScriptableObject;
     public EntityScriptableObject EntityScriptableObject => _entityScriptableObject;
 
+    public Entity (EntityScriptableObject entityScriptableObject)
+    {
+        _entityScriptableObject = entityScriptableObject;
+    }
     public virtual void Interact()
     {
         Transform interactionPoint;
@@ -22,7 +27,6 @@ public class Entity : MonoBehaviour
                 InteractionController.Instance.OnStopInteraction += StopInteraction;
 
                 UIController.Instance.OpenInventory();
-                PlayerController.Instance.enabled = false;
 
                 break;
             case EntityType.Door:
@@ -72,6 +76,17 @@ public class Entity : MonoBehaviour
                 Cursor.visible = true;
 
                 gameObject.GetComponentInChildren<Padlock>().enabled = true;
+
+                break;
+            case EntityType.Valve:
+                Debug.Log("ValveRotated");
+
+                break;
+            case EntityType.ValveSocket:
+                InteractionController.Instance.CurrentInteraction = InteractionType.ValveSocket;
+                InteractionController.Instance.OnStopInteraction += StopInteraction;
+
+                UIController.Instance.OpenInventory();
 
                 break;
             default:
@@ -127,9 +142,23 @@ public class Entity : MonoBehaviour
                 GameManager.ResumeGame();
 
                 break;
+            case EntityType.ValveSocket:
+                InteractionController.Instance.OnStopInteraction -= StopInteraction;
+                InteractionController.Instance.CurrentInteraction = InteractionType.None;
+
+                break;
             default:
                 break;
         }
+    }
+    public void SetScriptableObject(EntityScriptableObject scriptableObject)
+    {
+        if(_entityScriptableObject != null)
+        {
+            return;
+        }
+
+        _entityScriptableObject = scriptableObject;
     }
 }
 
@@ -143,4 +172,6 @@ public enum EntityType
     Door,
     SafeDigital,
     SafePadlock,
+    Valve,
+    ValveSocket
 }

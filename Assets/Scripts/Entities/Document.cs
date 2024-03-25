@@ -4,7 +4,11 @@ public class Document : Entity
 {
     [SerializeField] private DocumentScriptableObject _documentScriptableObject;
     public DocumentScriptableObject DocumentScriptableObject => _documentScriptableObject;
-
+    public Document(EntityScriptableObject entityScriptableObject, DocumentScriptableObject scriptableObject)
+        : base(entityScriptableObject)
+    {
+        _documentScriptableObject = scriptableObject;
+    }
     public void Read()
     {
         switch (_documentScriptableObject.Type)

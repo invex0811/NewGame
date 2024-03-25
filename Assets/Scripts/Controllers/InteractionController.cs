@@ -23,6 +23,11 @@ public class InteractionController : MonoBehaviour
         get => _currentInteraction;
         set => _currentInteraction = value;
     }
+    public GameObject CurrentInteractableEntity
+    {
+        get;
+        private set;
+    }
 
     private void Awake()
     {
@@ -55,6 +60,7 @@ public class InteractionController : MonoBehaviour
                 return;
 
             Entity entity = hit.collider.GetComponent<Entity>();
+            CurrentInteractableEntity = hit.collider.gameObject;
 
             if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.Interact]))
             {
@@ -97,5 +103,6 @@ public enum InteractionType
     None,
     TV,
     SafeNumeric,
-    SafePadlock
+    SafePadlock,
+    ValveSocket
 }

@@ -13,7 +13,7 @@ class UIController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Player.Inventory.Add(new Item(Resources.Load<ItemScriptableObject>("ScriptableObjects/Items/Key"))); // Код для дебага. Добавляет предмет "Key" в инвентарь игрока.
+            Player.Inventory.Add(new Item(Resources.Load<EntityScriptableObject>("ScriptableObjects/Entities/Key"), Resources.Load<ItemScriptableObject>("ScriptableObjects/Items/Key"))); // Код для дебага. Добавляет предмет "Key" в инвентарь игрока.
         }
 
         if (GameManager.TypeOfControl == TypesOfControl.PlayerControl && Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.OpenInventory]))

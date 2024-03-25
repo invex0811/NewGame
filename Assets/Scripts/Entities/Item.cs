@@ -5,7 +5,8 @@ public class Item : Entity
     [SerializeField] private ItemScriptableObject _itemScriptableObject;
     public ItemScriptableObject ItemScriptableObject => _itemScriptableObject;
 
-    public Item (ItemScriptableObject scriptableObject)
+    public Item(EntityScriptableObject entityScriptableObject,ItemScriptableObject scriptableObject)
+        :base(entityScriptableObject)
     {
         _itemScriptableObject = scriptableObject;
     }
@@ -25,6 +26,16 @@ public class Item : Entity
 
                 Player.Inventory.Remove(this);
                 Debug.Log("Tape inserted.");
+
+                break;
+            case ItemType.Valve:
+                if (InteractionController.Instance.CurrentInteraction != InteractionType.ValveSocket)
+                    return;
+
+                Player.Inventory.Remove(this);
+                GameObject valve = Instantiate(EntityScriptableObject.Prefab, InteractionController.Instance.CurrentInteractableEntity.transform);
+                Entity entity = valve.AddComponent(typeof(Entity)) as Entity;
+                entity.SetScriptableObject(Resources.Load<EntityScriptableObject>("ScriptableObjects/Entities/Valve"));
 
                 break;
             default:
@@ -48,6 +59,11 @@ public class Item : Entity
                 Destroy(gameObject);
 
                 break;
+            case EntityType.Valve:
+                Player.Inventory.Add(this);
+                Destroy(gameObject);
+
+                break;
             default:
                 Destroy(gameObject);
 
@@ -59,5 +75,6 @@ public class Item : Entity
 public enum ItemType
 {
     Key,
-    VideoTape
+    VideoTape,
+    Valve
 }
