@@ -3,21 +3,30 @@ using UnityEngine;
 
 public class Valve : MonoBehaviour
 {
+    [SerializeField, Tooltip("Degrees per frame.")] private float _rotationSpeed;
+    [SerializeField] private Axis _rotationAxis;
     [SerializeField] private float _rotationAngle;
-    [SerializeField] private float _rotationTime;
-    [SerializeField] private bool _changeRotationDirection;
 
     private float _deltaTime = 0;
+    private float _rotationTime;
     private IEnumerator Rotate()
     {
+        Vector3 axis = _rotationAxis switch
+        {
+            Axis.X => Vector3.right,
+            Axis.Y => Vector3.up,
+            Axis.Z => Vector3.forward,
+            Axis.NegativeX => Vector3.left,
+            Axis.NegativeY => Vector3.down,
+            Axis.NegativeZ => Vector3.back,
+            _ => Vector3.right,
+        };
+
+        _rotationTime = _rotationAngle / _rotationSpeed;
+
         while (_deltaTime < _rotationTime)
         {
-            float angle = _rotationAngle / _rotationTime;
-
-            if (_changeRotationDirection)
-                angle *= -1;
-
-            gameObject.transform.Rotate(Vector3.forward, angle);
+            gameObject.transform.Rotate(axis, _rotationSpeed);
             _deltaTime++;
 
             yield return new WaitForFixedUpdate();

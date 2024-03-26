@@ -36,6 +36,7 @@ public class Item : Entity
                 GameObject valve = Instantiate(EntityScriptableObject.Prefab, InteractionController.Instance.CurrentInteractableEntity.transform.parent);
                 Entity entity = valve.AddComponent(typeof(Entity)) as Entity;
                 entity.SetScriptableObject(Resources.Load<EntityScriptableObject>("ScriptableObjects/Entities/Valve"));
+                InteractionController.Instance.CurrentInteractableEntity.layer = 0;
 
                 break;
             default:
