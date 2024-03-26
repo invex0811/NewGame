@@ -4,8 +4,8 @@ using UnityEngine;
 public class PadlockRing : MonoBehaviour
 {
     [SerializeField] private char[] _values;
-    [SerializeField] private float _rotationDuration;
-    [SerializeField] private float _rotationSpeed;
+    [SerializeField] private float _rotationAngle;
+    [SerializeField] private float _rotationTime;
     [SerializeField] private int _currentValue;
     [SerializeField] private int _ringIndex;
     [SerializeField] private bool _isActive;
@@ -58,13 +58,14 @@ public class PadlockRing : MonoBehaviour
 
         StartCoroutine(Rotate(Vector3.back));
     }
-    private IEnumerator Rotate(Vector3 direction)
+    private IEnumerator Rotate(Vector3 axis)
     {
-        while(_deltaTime < _rotationDuration)
+        while(_deltaTime < _rotationTime)
         {
-            gameObject.transform.Rotate(direction, _rotationSpeed);
+            gameObject.transform.Rotate(axis, _rotationAngle / _rotationTime);
             _deltaTime++;
-            yield return null;
+
+            yield return new WaitForFixedUpdate();
         }
 
         _deltaTime = 0;

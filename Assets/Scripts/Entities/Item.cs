@@ -33,7 +33,7 @@ public class Item : Entity
                     return;
 
                 Player.Inventory.Remove(this);
-                GameObject valve = Instantiate(EntityScriptableObject.Prefab, InteractionController.Instance.CurrentInteractableEntity.transform);
+                GameObject valve = Instantiate(EntityScriptableObject.Prefab, InteractionController.Instance.CurrentInteractableEntity.transform.parent);
                 Entity entity = valve.AddComponent(typeof(Entity)) as Entity;
                 entity.SetScriptableObject(Resources.Load<EntityScriptableObject>("ScriptableObjects/Entities/Valve"));
 

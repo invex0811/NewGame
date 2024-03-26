@@ -69,6 +69,8 @@
     <Compile Include="Assets\Scripts\Lists\AudioProvider.cs" />
     <Compile Include="Assets\Scripts\Inventory\JournalSlot .cs" />
     <Compile Include="Assets\Scripts\EntityScriptableObject.cs" />
+    <Compile Include="Assets\Scripts\EntityInterfaces\TableLamp.cs" />
+    <Compile Include="Assets\Scripts\EntityInterfaces\Door.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\SafeButton.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Services\GlobalAudioService.cs" />
@@ -76,11 +78,11 @@
     <Compile Include="Assets\Scripts\Controllers\ObjectInspectorController.cs" />
     <Compile Include="Assets\Scripts\Entities\Document.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\PadlockRing.cs" />
+    <Compile Include="Assets\Scripts\EntityInterfaces\Valve.cs" />
     <Compile Include="Assets\Scripts\Controllers\InteractionController.cs" />
     <Compile Include="Assets\Scripts\DocumentScriptableObject.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Entities\Item.cs" />
-    <Compile Include="Assets\Scripts\EntityInterfaces\DoorController.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\Padlock.cs" />
     <Compile Include="Assets\Scripts\InteractionPoints.cs" />
     <Compile Include="Assets\Scripts\Controllers\CameraController.cs" />

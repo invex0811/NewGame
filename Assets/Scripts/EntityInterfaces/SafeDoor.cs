@@ -5,9 +5,7 @@ public class SafeDoor : MonoBehaviour
 {
     [SerializeField] private bool _isLocked;
     [SerializeField] private string _password;
-    [SerializeField] private float _rotatingSpeed;
 
-    private float _deltaTime;
     private string _enteredCombination;
     private SafeButtonController[] _buttons;
 
@@ -65,25 +63,8 @@ public class SafeDoor : MonoBehaviour
             return;
         }
 
-        OpenDoor();
-    }
-    private void OpenDoor()
-    {
-        StartCoroutine(RotateDoor());
+        GetComponent<Door>().Open();
+
         enabled = false;
-    }
-    private IEnumerator RotateDoor()
-    {
-        while (_deltaTime < _rotatingSpeed)
-        {
-            gameObject.transform.Rotate(Vector3.back, 90 / _rotatingSpeed);
-            _deltaTime++;
-            yield return null;
-        }
-        _deltaTime = 0;
-
-        yield return new WaitForSeconds(5f);
-
-        yield break;
     }
 }

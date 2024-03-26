@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Playables;
 
 public class Entity : MonoBehaviour
 {
@@ -30,12 +29,12 @@ public class Entity : MonoBehaviour
 
                 break;
             case EntityType.Door:
-                DoorController door = gameObject.GetComponent<DoorController>();
+                Door door = gameObject.GetComponent<Door>();
 
                 if (door.IsOpen)
-                    door.CloseDoor();
+                    door.Close();
                 else
-                    door.OpenDoor();
+                    door.Open();
 
                 break;
             case EntityType.SafeDigital:
@@ -79,7 +78,13 @@ public class Entity : MonoBehaviour
 
                 break;
             case EntityType.Valve:
-                Debug.Log("ValveRotated");
+                Valve valve = gameObject.GetComponent<Valve>();
+
+                if (valve.enabled)
+                {
+                    valve.Interact();
+                    gameObject.layer = 0;
+                }
 
                 break;
             case EntityType.ValveSocket:
@@ -87,6 +92,10 @@ public class Entity : MonoBehaviour
                 InteractionController.Instance.OnStopInteraction += StopInteraction;
 
                 UIController.Instance.OpenInventory();
+
+                break;
+            case EntityType.TableLamp:
+                GetComponent<TableLamp>().Toogle();
 
                 break;
             default:
@@ -173,5 +182,6 @@ public enum EntityType
     SafeDigital,
     SafePadlock,
     Valve,
-    ValveSocket
+    ValveSocket,
+    TableLamp
 }

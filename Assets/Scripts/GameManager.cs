@@ -17,12 +17,10 @@ public static class GameManager
     public static void PauseGame()
     {
         _isGamePaused = true;
-        Time.timeScale = 0f;
     }
     public static void ResumeGame()
     {
         _isGamePaused = false;
-        Time.timeScale = 1f;
     }
     public static void ChangeTypeOfControll(TypesOfControl newType)
     {

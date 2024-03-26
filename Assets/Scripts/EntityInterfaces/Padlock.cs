@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Padlock : MonoBehaviour
 {
-    [SerializeField] private GameObject _door;
+    [SerializeField] private Door _door;
     [SerializeField] private char[] _password;
 
     private PadlockRing[] _rings;
@@ -32,6 +32,9 @@ public class Padlock : MonoBehaviour
     }
     private void Update()
     {
+        if(InteractionController.Instance.CurrentInteraction != InteractionType.SafePadlock)
+            enabled = false;
+
         if (Input.GetKeyDown(KeyCode.A))
             ActivatePreviousRing();
         if (Input.GetKeyDown(KeyCode.D))
@@ -82,20 +85,13 @@ public class Padlock : MonoBehaviour
             gameObject.GetComponent<Animator>().Play("PadlockOpening");
         }
     }
-    private IEnumerator OpenDoor()
+    private void OpenDoor()
     {
         GetComponentInParent<Entity>().gameObject.layer = 0;
 
-        int _deltaTime = 0;
-        while (_deltaTime < 180)
-        {
-            _door.transform.Rotate(Vector3.forward, 0.50f);
-            _deltaTime++;
-            yield return null;
-        }
+        _door.Open();
 
         enabled = false;
         Destroy(gameObject);
-        yield break;
     }
 }
