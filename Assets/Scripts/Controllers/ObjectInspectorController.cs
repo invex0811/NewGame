@@ -115,10 +115,15 @@ public class ObjectInspectorController : MonoBehaviour, IDragHandler
         _inspectionCamera.transform.position = new Vector3(1000, 1000, 995);
         _inspectionCamera.transform.eulerAngles = new Vector3(0, 0, 0);
 
-        //_entityName.text = entity.EntityScriptableObject.Name;
+        _entityName.text = entity.EntityScriptableObject.Name;
 
-        //if (entity is Item item)
-        //    _entityDescription.text = item.ItemScriptableObject.Description;
+        if (entity is Item item)
+        {
+            _entityDescription.text = item.ItemScriptableObject.Description;
+            return;
+        }
+
+        _entityDescription.text = "";
     }
     public void OnDrag(PointerEventData eventData)
     {

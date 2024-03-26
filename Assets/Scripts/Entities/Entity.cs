@@ -54,7 +54,7 @@ public class Entity : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
 
-                gameObject.GetComponentInChildren<SafeDoor>().enabled = true;
+                gameObject.GetComponentInChildren<SafeDigital>().enabled = true;
 
                 break;
             case EntityType.SafePadlock:

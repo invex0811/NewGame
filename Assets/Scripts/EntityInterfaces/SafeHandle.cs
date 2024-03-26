@@ -2,20 +2,20 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SafeHandleController : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
+public class SafeHandle : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField, Tooltip("Degrees per frame.")] private float _rotationSpeed;
     [SerializeField] private float _rotationAngleWhenLocked;
     [SerializeField] private float _rotationAngleWhenUnlocked;
     [SerializeField] private Axis _rotationAxis;
 
-    private SafeDoor _door;
+    private SafeDigital _door;
     private float _deltaTime = 0;
     private float _rotationTime;
 
     private void OnEnable()
     {
-        _door = GetComponentInParent<SafeDoor>();
+        _door = GetComponentInParent<SafeDigital>();
     }
     private void OnDisable()
     {

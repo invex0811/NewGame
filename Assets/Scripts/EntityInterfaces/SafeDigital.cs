@@ -1,13 +1,14 @@
-using System.Collections;
 using UnityEngine;
 
-public class SafeDoor : MonoBehaviour
+public class SafeDigital : MonoBehaviour
 {
     [SerializeField] private bool _isLocked;
     [SerializeField] private string _password;
+    [SerializeField] private Door _door;
+    [SerializeField] private SafeHandle _handle;
 
     private string _enteredCombination;
-    private SafeButtonController[] _buttons;
+    private SafeButton[] _buttons;
 
     public bool IsLocked
     {
@@ -16,22 +17,23 @@ public class SafeDoor : MonoBehaviour
 
     private void OnEnable()
     {
-        _buttons = GetComponentsInChildren<SafeButtonController>();
-        foreach (SafeButtonController button in _buttons)
+        _buttons = GetComponentsInChildren<SafeButton>();
+        foreach (SafeButton button in _buttons)
         {
             button.enabled = true;
             button.OnButtonPressed += ComparePassword;
         }
-        GetComponentInChildren<SafeHandleController>().enabled = true;
-        GetComponentInChildren<SafeHandleController>().OnHandleEndRotation += UpdateState;
+
+        _handle.enabled = true;
+        _handle.OnHandleEndRotation += UpdateState;
 
         _enteredCombination = "";
     }
     private void OnDisable()
     {
-        GetComponentInChildren<SafeHandleController>().OnHandleEndRotation -= UpdateState;
-        GetComponentInChildren<SafeHandleController>().enabled = false;
-        foreach (SafeButtonController button in _buttons)
+        _handle.OnHandleEndRotation -= UpdateState;
+        _handle.enabled = false;
+        foreach (SafeButton button in _buttons)
         {
             button.OnButtonPressed -= ComparePassword;
             button.enabled = false;
@@ -63,7 +65,7 @@ public class SafeDoor : MonoBehaviour
             return;
         }
 
-        GetComponent<Door>().Open();
+        _door.Open();
 
         enabled = false;
     }
