@@ -10,16 +10,26 @@ public class FlashlightController : MonoBehaviour
 
     private void Update()
     {
-        StartCoroutine(Rotate(_camera.rotation));
+        if (_delay == 0)
+        {
+            Rotate(_camera.rotation);
+            return;
+        }
+
+        StartCoroutine(DelayRotation(_camera.rotation));
     }
 
-    private IEnumerator Rotate(Quaternion rotation)
+    private IEnumerator DelayRotation(Quaternion rotation)
     {
         yield return new WaitForSecondsRealtime(_delay);
 
-        transform.rotation = rotation;
-        transform.eulerAngles = new Vector3(-transform.eulerAngles.x - _horizontalIncline - 90, transform.eulerAngles.y + _verticalIncline - 180, transform.eulerAngles.z);
+        Rotate(rotation);
 
         yield break;
+    }
+    private void Rotate(Quaternion rotation)
+    {
+        transform.rotation = rotation;
+        transform.eulerAngles = new Vector3(-transform.eulerAngles.x - 90 + _verticalIncline, transform.eulerAngles.y + _horizontalIncline - 180, transform.eulerAngles.z);
     }
 }
