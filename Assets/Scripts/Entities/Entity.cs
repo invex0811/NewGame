@@ -78,13 +78,7 @@ public class Entity : MonoBehaviour
 
                 break;
             case EntityType.Valve:
-                Valve valve = gameObject.GetComponent<Valve>();
-
-                if (valve.enabled)
-                {
-                    valve.Interact();
-                    gameObject.layer = 0;
-                }
+                transform.parent.GetComponentInChildren<ValveSocket>().Interact();
 
                 break;
             case EntityType.ValveSocket:

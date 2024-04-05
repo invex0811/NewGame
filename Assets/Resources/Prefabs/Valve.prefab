@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3576534257402708745}
   - component: {fileID: 2133778523022771982}
   - component: {fileID: 6959408377680790446}
-  - component: {fileID: 2885550778755347256}
+  - component: {fileID: 8103250508047456995}
   m_Layer: 3
   m_Name: Valve
   m_TagString: Untagged
@@ -108,7 +108,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.335907, y: 3.3359075, z: 0.8114356}
   m_Center: {x: 0, y: 0, z: 0.2052597}
---- !u!114 &2885550778755347256
+--- !u!114 &8103250508047456995
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,9 +117,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1884663813063905930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3928b40b50e65242bbae891a1104e8a, type: 3}
+  m_Script: {fileID: 11500000, guid: d4f22425edcb32e47b81da31d634c6bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotationSpeed: 3
-  _rotationAxis: 5
-  _rotationAngle: 360
+  _entityScriptableObject: {fileID: 11400000, guid: 78d1a4c99eab94148b988cabce9a2bc4,
+    type: 2}

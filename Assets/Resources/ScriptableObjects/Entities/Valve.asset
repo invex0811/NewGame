@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 8
   _name: Valve
-  _raycastFeedbackText: Inspect
+  _raycastFeedbackText: Rotate
   _prefab: {fileID: 1884663813063905930, guid: 81b34445813b2604682f9affd9c07d36, type: 3}

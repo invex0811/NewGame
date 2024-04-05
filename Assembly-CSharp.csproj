@@ -76,9 +76,9 @@
     <Compile Include="Assets\Scripts\Services\GlobalAudioService.cs" />
     <Compile Include="Assets\Scripts\Lists\EntitiesList.cs" />
     <Compile Include="Assets\Scripts\Controllers\ObjectInspectorController.cs" />
+    <Compile Include="Assets\Scripts\EntityInterfaces\ValveSocket.cs" />
     <Compile Include="Assets\Scripts\Entities\Document.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\PadlockRing.cs" />
-    <Compile Include="Assets\Scripts\EntityInterfaces\Valve.cs" />
     <Compile Include="Assets\Scripts\Controllers\InteractionController.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\SafeDigital.cs" />
     <Compile Include="Assets\Scripts\DocumentScriptableObject.cs" />
@@ -92,6 +92,7 @@
     <Compile Include="Assets\Scripts\Controllers\JournalPanelController.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Controllers\FlashlightController.cs" />
     <Compile Include="Assets\Scripts\ItemScriptableObject.cs" />
     <Compile Include="Assets\Scripts\Lists\KeyBindsList.cs" />
     <Compile Include="Assets\Scripts\Controllers\OptionsPanelController.cs" />
