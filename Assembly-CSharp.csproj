@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\Controllers\ObjectInspectorController.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\ValveSocket.cs" />
     <Compile Include="Assets\Scripts\Entities\Document.cs" />
+    <Compile Include="Assets\Scripts\Controllers\StaminaBarController.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\PadlockRing.cs" />
     <Compile Include="Assets\Scripts\Controllers\InteractionController.cs" />
     <Compile Include="Assets\Scripts\EntityInterfaces\SafeDigital.cs" />

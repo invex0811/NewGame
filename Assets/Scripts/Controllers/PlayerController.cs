@@ -6,16 +6,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioClip[] _stepSounds;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private GameObject _flashlight;
-    
+    [SerializeField] private float _staminaRegenerationDelay;
+    [SerializeField] private float _sprintSpeed;
+    [SerializeField] private float _walkSpeed;
+
     private CharacterController _controller;
-    private float _squatDuration = 0.5f;
-    private float _squatDepth = 2f;
-    private bool _isCrouchEnabled = true;
-    private bool _isCrouch = false;
-    private bool _isFootstepSoundPlaying = false;
+    private Coroutine _stamninaReducingRoutine;
+    private Coroutine _stamninaRegeneratingRoutine;
     private int _currentClipIndex;
+    private bool _isFootstepSoundPlaying = false;
+    private bool _isSprinting = false;
+    private float _moveSpeed = 20f;
+    private float _stamina = 100;
 
     public static PlayerController Instance;
+
+    public float Stamina
+    {
+        get => _stamina;
+    }
 
     private void Awake()
     {
@@ -36,16 +45,30 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.Crouch]) && _isCrouchEnabled)
-            StartCoroutine(Crouch());
-
         if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.ToogleFlashlight]))
         {
             _flashlight.SetActive(!_flashlight.activeSelf);
             GlobalAudioService.PlayAudio(AudioProvider.GetSound(Sound.ButtonClick), _audioSource);
         }
 
+        if (Input.GetKeyDown(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.Sprint]))
+            EnableSprint();
+        if (Input.GetKeyUp(KeyBindsList.PlayerControllBinds[PlayerControllBindTypes.Sprint]))
+            DisableSprint();
+
         MovePlayer();
+    }
+    private void FixedUpdate()
+    {
+        Physics.Raycast(new Ray(transform.position, Vector3.down), out RaycastHit hit, 7);
+
+        if (hit.collider == null)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y - 1, transform.position.z);
+            return;
+        }
+
+        transform.position = new Vector3(transform.position.x, hit.collider.transform.position.y + 6.9f, transform.position.z);
     }
     private void OnEnable()
     {
@@ -59,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
 
-        _controller.Move(Player.MoveSpeed * Time.deltaTime * moveDirection);
+        _controller.Move(_moveSpeed * Time.deltaTime * moveDirection);
 
         if (horizontalInput == 1 || horizontalInput == -1 || verticalInput == 1 || verticalInput == -1)
         {
@@ -68,6 +91,40 @@ public class PlayerController : MonoBehaviour
 
             StartCoroutine(PlayFootstepSound());
         }
+    }
+    private void EnableSprint()
+    {
+        if (_stamina <= 20 || _isSprinting)
+            return;
+
+        Debug.Log("Sprint enabled");
+
+        _moveSpeed = _sprintSpeed;
+        _isSprinting = true;
+
+        if (_stamninaReducingRoutine != null)
+            StopCoroutine(_stamninaReducingRoutine);
+        if (_stamninaRegeneratingRoutine != null)
+            StopCoroutine(_stamninaRegeneratingRoutine);
+
+        _stamninaReducingRoutine = StartCoroutine(ReduceStamina());
+    }
+    private void DisableSprint()
+    {
+        if (!_isSprinting)
+            return;
+
+        Debug.Log("Sprint disabled");
+
+        _moveSpeed = _walkSpeed;
+        _isSprinting = false;
+
+        if (_stamninaReducingRoutine != null)
+            StopCoroutine(_stamninaReducingRoutine);
+        if (_stamninaRegeneratingRoutine != null)
+            StopCoroutine(_stamninaRegeneratingRoutine);
+
+        _stamninaRegeneratingRoutine = StartCoroutine(RegenerateStamina());
     }
     private IEnumerator PlayFootstepSound()
     {
@@ -91,30 +148,32 @@ public class PlayerController : MonoBehaviour
 
         yield break;
     }
-    private IEnumerator Crouch()
+    private IEnumerator ReduceStamina()
     {
-        _isCrouchEnabled = false;
-
-        float elapsedTime = 0f;
-        float targetScale = transform.localScale.y;
-        if (!_isCrouch)
-            targetScale -= _squatDepth;
-        if (_isCrouch)
-            targetScale += _squatDepth;
-
-        while (elapsedTime < _squatDuration)
+        while (_stamina != 0)
         {
-            transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(transform.localScale.x, targetScale, transform.localScale.z), elapsedTime);
+            _stamina--;
+            Debug.Log($"Stamina reduced: {_stamina}");
 
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            yield return new WaitForSeconds(0.1f);
         }
 
-        transform.localScale = new Vector3(transform.localScale.x, targetScale, transform.localScale.z);
+        DisableSprint();
 
-        _isCrouch = !_isCrouch;
-        _isCrouchEnabled = true;
+        yield break;
+    }
+    private IEnumerator RegenerateStamina()
+    {
+        Debug.Log($"Stamina regeneration delay started");
+        yield return new WaitForSeconds(_staminaRegenerationDelay);
 
-        yield return null;
+        while(_stamina < 100)
+        {
+            _stamina++;
+            Debug.Log($"Stamina regenerated: {_stamina}");
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        yield break;
     }
 }

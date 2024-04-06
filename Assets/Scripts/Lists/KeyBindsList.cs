@@ -7,8 +7,8 @@ static class KeyBindsList
         {PlayerControllBindTypes.StopInteraction, KeyCode.Escape},
         {PlayerControllBindTypes.OpenInventory, KeyCode.I},
         {PlayerControllBindTypes.Interact, KeyCode.E},
-        {PlayerControllBindTypes.Crouch, KeyCode.LeftControl},
-        {PlayerControllBindTypes.ToogleFlashlight, KeyCode.F}
+        {PlayerControllBindTypes.ToogleFlashlight, KeyCode.F},
+        {PlayerControllBindTypes.Sprint, KeyCode.LeftShift}
     };
     public static readonly Dictionary<InventoryControllBindTypes, KeyCode> InventoryControllBinds = new()
     {
@@ -27,8 +27,8 @@ enum PlayerControllBindTypes
     StopInteraction,
     OpenInventory,
     Interact,
-    Crouch,
-    ToogleFlashlight
+    ToogleFlashlight,
+    Sprint
 }
 enum InventoryControllBindTypes
 {
